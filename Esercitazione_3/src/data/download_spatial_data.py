@@ -17,7 +17,7 @@ def get_metadata():
         pd.DataFrame: Metadata information
     """
     repo_id = "nonchev/TCGA_digital_spatial_transcriptomics"
-    filename = "metadata_2025-01-11.csv"
+    filename = "metadata_2025-05-21.csv"
     
     file_path = hf_hub_download(repo_id=repo_id, 
                                filename=filename, 
@@ -36,7 +36,7 @@ def download_specific_sample(sample_path, output_dir='TCGA_data'):
                      allow_patterns=sample_path,
                      repo_type="dataset")
 
-def download_cancer_type(cancer_type, slide_type=None, output_dir='TCGA_data'):
+def download_cancer_type(cancer_type, slide_type=None, output_dir='data/raw'):
     """
     Download data for a specific cancer type and optionally slide type
     Args:
@@ -50,23 +50,6 @@ def download_cancer_type(cancer_type, slide_type=None, output_dir='TCGA_data'):
         pattern = f"{cancer_type}/*"
     
     snapshot_download("nonchev/TCGA_digital_spatial_transcriptomics",
-                     local_dir=output_dir,
+                     local_dir=f"{output_dir}/TCGA_data/{cancer_type}",
                      allow_patterns=[pattern],
                      repo_type="dataset")
-
-if __name__ == "__main__":
-    # Example usage:
-    # First, set up your Hugging Face token
-    # setup_huggingface("YOUR_TOKEN_HERE")
-    
-    # Get metadata
-    # metadata = get_metadata()
-    # print(metadata.head())
-    
-    # Download specific cancer type
-    # download_cancer_type('TCGA_KIRC', slide_type='FF')
-    
-    # Download specific sample
-    # sample_path = "TCGA_SKCM/FFPE/TCGA-D9-A3Z3-06Z-00-DX1.C4820632-C64D-4661-94DD-9F27F75519C3.h5ad.gz"
-    # download_specific_sample(sample_path)
-    pass 
