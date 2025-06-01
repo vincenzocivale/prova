@@ -5,3 +5,8 @@ ENV/
 __pycache__/
 *.pyc
 .DS_Store
+*.h5ad
+*.gz
+*.zip
+*.pkl
+data/
