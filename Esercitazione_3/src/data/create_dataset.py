@@ -8,10 +8,17 @@ import scanpy as sc
 from tqdm import tqdm
 
 def load_h5ad_file(file_path):
-    adata = sc.read_h5ad(file_path) 
+    adata = sc.read_h5ad(file_path)
     gene_ids = adata.var_names.to_numpy()
+    
+    # Converti seq_data in numpy array, gestendo sparse matrix
     seq_data = adata.X
-    labels = adata.obs['predicted_label']
+    if not isinstance(seq_data, np.ndarray):
+        seq_data = seq_data.toarray()
+    
+    # Ora labels saranno i valori di espressione genica (array 2D: n_cells x n_genes)
+    labels = seq_data
+    
     return gene_ids, seq_data, labels
 
 def inizialize_record_dict(model):
@@ -66,7 +73,7 @@ def create_dataset(data_fold_path, tokenizer, model):
         tokenized_data = tokenizer.tokenize_cell_vectors(seq_data, gene_ids)
         
         # Process one cell at a time
-        for cell_tokens, cell_values in tqdm(tokenized_data, desc="Processing cells", leave=False):
+        for cell_tokens, cell_values in tqdm(tokenized_data, desc="Processing cells", leave=True):
             # Move tensors to device
             cell_tokens = cell_tokens.to(device)
             cell_values = cell_values.to(device)
