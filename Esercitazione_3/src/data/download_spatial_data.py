@@ -36,13 +36,14 @@ def download_specific_sample(sample_path, output_dir='TCGA_data'):
                      allow_patterns=sample_path,
                      repo_type="dataset")
 
-def download_cancer_type(cancer_type, slide_type=None, output_dir='data/raw'):
+def download_cancer_type(cancer_type, slide_type=None, output_dir='data/raw', max_files=None):
     """
     Download data for a specific cancer type and optionally slide type
     Args:
         cancer_type (str): Cancer type (e.g., 'TCGA_KIRC', 'TCGA_SKCM')
         slide_type (str): Optional - 'FF' or 'FFPE'
         output_dir (str): Directory to save the downloaded data
+        max_files (int): Optional - Maximum number of files to download
     """
     if slide_type:
         pattern = f"{cancer_type}/{slide_type}/*"
@@ -53,3 +54,20 @@ def download_cancer_type(cancer_type, slide_type=None, output_dir='data/raw'):
                      local_dir=f"{output_dir}/TCGA_data/{cancer_type}",
                      allow_patterns=[pattern],
                      repo_type="dataset")
+    
+def download_first_n_samples(n, output_dir='data/raw'):
+    """
+    Download the first n samples from the dataset using metadata
+    Args:
+        n (int): Number of samples to download
+        output_dir (str): Directory to save the downloaded data
+    """
+    # Get metadata
+    metadata = get_metadata()
+    
+    # Get first n sample paths
+    sample_paths = metadata['file_path'].head(n).tolist()
+    
+    # Download each sample
+    for path in sample_paths:
+        download_specific_sample(path, output_dir=f"{output_dir}")

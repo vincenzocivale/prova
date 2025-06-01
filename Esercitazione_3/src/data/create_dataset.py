@@ -58,6 +58,11 @@ def create_dataset(data_fold_path, tokenizer, model):
         gene_ids, seq_data, labels = load_h5ad_file(file_path)
         record_dict['label'].extend(labels)
         
+        # Add file origin to record dict if not already present
+        if 'file_origin' not in record_dict:
+            record_dict['file_origin'] = []
+        record_dict['file_origin'].extend([file] * len(labels))
+        
         tokenized_data = tokenizer.tokenize_cell_vectors(seq_data, gene_ids)
         
         # Process one cell at a time
@@ -85,7 +90,8 @@ def create_dataset(data_fold_path, tokenizer, model):
     for hook in hooks:
         hook.remove()
     
-    return record_dict
+    dataset = Dataset.from_dict(record_dict)
+    return dataset
 
                 
             
