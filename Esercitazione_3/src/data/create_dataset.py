@@ -5,6 +5,7 @@ from datasets import Dataset
 from pathlib import Path
 import torch
 import scanpy as sc
+from tqdm import tqdm
 
 def load_h5ad_file(file_path):
 
@@ -29,7 +30,7 @@ def create_dataset(data_fold_path, tokenizer, model):
 
     record_dict = inizialize_record_dict(model)
     print(f"Found {len(os.listdir(data_fold_path))} files")
-    from tqdm import tqdm
+    
     files = [f for f in os.listdir(data_fold_path) if f.endswith(".h5ad.gz") or f.endswith(".h5ad")]
     progress_bar = tqdm(files, desc="Processing files", unit="file")
     for file in os.listdir(data_fold_path):
