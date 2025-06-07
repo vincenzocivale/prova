@@ -1,0 +1,2 @@
+2025-06-07 15:17:00,529 INFO    MainThread:1918122 [wandb_init.py:setup_run_log_directory():724] Logging user logs to /home/vcivale/prova/Esercitazione_2/wandb/run-20250607_151700-uhiqaf4a/logs/debug.log
+2025-06-07 15:17:00,529 INFO    MainThread:1918122 [wandb_init.py:setup_run_log_directory():725] Logging internal logs to /home/vcivale/prova/Esercitazione_2/wandb/run-20250607_151700-uhiqaf4a/logs/debug-internal.log

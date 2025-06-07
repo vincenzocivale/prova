@@ -1,0 +1,10 @@
+{"time":"2025-06-07T15:17:41.957007715+02:00","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/home/vcivale/prova/Esercitazione_2/wandb/run-20250607_151741-o8x6psow/logs/debug-core.log"}
+{"time":"2025-06-07T15:17:42.532840721+02:00","level":"INFO","msg":"created new stream","id":"o8x6psow"}
+{"time":"2025-06-07T15:17:42.532907221+02:00","level":"INFO","msg":"stream: started","id":"o8x6psow"}
+{"time":"2025-06-07T15:17:42.532985121+02:00","level":"INFO","msg":"sender: started","stream_id":"o8x6psow"}
+{"time":"2025-06-07T15:17:42.53299164+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"o8x6psow"}
+{"time":"2025-06-07T15:17:42.533071481+02:00","level":"INFO","msg":"handler: started","stream_id":"o8x6psow"}
+{"time":"2025-06-07T15:17:42.824291188+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-07T15:17:42.841600787+02:00","level":"ERROR","msg":"git repo not found","error":"repository does not exist"}
+{"time":"2025-06-07T15:17:49.383235686+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-07T15:17:59.623056249+02:00","level":"INFO","msg":"tensorboard: no root directory after 10 seconds, using working directory"}
