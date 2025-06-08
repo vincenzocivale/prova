@@ -4,6 +4,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torch.distributions import Beta
 from torch.utils.data.sampler import BatchSampler, SubsetRandomSampler
+import wandb
 
 from config import Args
 from net import Net
@@ -29,6 +30,11 @@ class Agent:
 
         self.buffer = self._init_buffer()
         self.counter = 0
+        
+        # For tracking training metrics
+        self.total_actor_loss = 0
+        self.total_critic_loss = 0
+        self.total_updates = 0
 
         if episode != 0:
             self._load_model(episode)
@@ -52,6 +58,13 @@ class Agent:
         print(f"\nSAVING AT EPISODE {episode}\n" + '-' * 40)
         model_path = f"{self.args.saveLocation}episode-{episode}.pkl"
         torch.save(self.net.state_dict(), model_path)
+        
+        # Log model save to Wandb
+        wandb.log({
+            "model/saved_episode": episode,
+            "training/model_saves": self.training_step
+        }, step=episode)
+        
         self.lastSavedEpisode = episode
 
     def select_action(self, state):
@@ -61,6 +74,17 @@ class Agent:
         dist = Beta(alpha, beta)
         action = dist.sample()
         log_prob = dist.log_prob(action).sum(dim=1)
+        
+        # Log action statistics occasionally
+        if np.random.random() < 0.01:  # Log 1% of actions to avoid spam
+            wandb.log({
+                "action/steering": action[0].item(),
+                "action/gas": action[1].item(),
+                "action/brake": action[2].item(),
+                "action/alpha_mean": alpha.mean().item(),
+                "action/beta_mean": beta.mean().item(),
+            })
+        
         return action.squeeze().cpu().numpy(), log_prob.item()
 
     def update(self, transition, episodeIndex):
@@ -73,6 +97,11 @@ class Agent:
         print("UPDATING WEIGHTS AT EPISODE =", episodeIndex)
         self.counter = 0
         self.training_step += 1
+        
+        # Reset loss tracking for this update
+        self.total_actor_loss = 0
+        self.total_critic_loss = 0
+        self.total_updates = 0
 
         s = torch.tensor(self.buffer['s'], dtype=torch.double).to(self.device)
         a = torch.tensor(self.buffer['a'], dtype=torch.double).to(self.device)
@@ -83,10 +112,34 @@ class Agent:
         with torch.no_grad():
             target_v = r + self.args.gamma * self.net(s_)[1]
             advantage = target_v - self.net(s)[1]
+            
+        # Log buffer statistics
+        wandb.log({
+            "buffer/mean_reward": r.mean().item(),
+            "buffer/std_reward": r.std().item(),
+            "buffer/mean_advantage": advantage.mean().item(),
+            "buffer/std_advantage": advantage.std().item(),
+            "training/buffer_updates": self.training_step
+        }, step=episodeIndex)
 
-        for _ in range(self.ppo_epoch):
+        for epoch in range(self.ppo_epoch):
             for index in BatchSampler(SubsetRandomSampler(range(self.buffer_capacity)), self.batch_size, False):
-                self._update_step(s[index], a[index], old_a_logp[index], advantage[index], target_v[index])
+                actor_loss, critic_loss = self._update_step(s[index], a[index], old_a_logp[index], advantage[index], target_v[index])
+                self.total_actor_loss += actor_loss
+                self.total_critic_loss += critic_loss
+                self.total_updates += 1
+
+        # Log average losses for this training step
+        avg_actor_loss = self.total_actor_loss / self.total_updates
+        avg_critic_loss = self.total_critic_loss / self.total_updates
+        
+        wandb.log({
+            "loss/actor_loss": avg_actor_loss,
+            "loss/critic_loss": avg_critic_loss,
+            "loss/total_loss": avg_actor_loss + 2 * avg_critic_loss,
+            "training/ppo_updates": self.training_step,
+            "training/learning_rate": self.optimizer.param_groups[0]['lr']
+        }, step=episodeIndex)
 
         if episodeIndex - self.prevSaveIndex > 10:
             self._save_model(episodeIndex)
@@ -106,4 +159,10 @@ class Agent:
         loss = actor_loss + 2. * critic_loss
         self.optimizer.zero_grad()
         loss.backward()
+        
+        # Gradient clipping
+        torch.nn.utils.clip_grad_norm_(self.net.parameters(), max_norm=0.5)
+        
         self.optimizer.step()
+        
+        return actor_loss.item(), critic_loss.item()
