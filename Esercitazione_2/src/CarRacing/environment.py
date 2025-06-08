@@ -1,7 +1,7 @@
 import gymnasium as gym
 import cv2
 import numpy as np
-from config import Args
+from CarRacing.config import Args
 
 class CarRacingEnv:
     def __init__(self, configs: Args, render_mode="rgb_array"):

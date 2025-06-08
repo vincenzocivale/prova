@@ -6,8 +6,8 @@ from torch.distributions import Beta
 from torch.utils.data.sampler import BatchSampler, SubsetRandomSampler
 import wandb
 
-from config import Args
-from net import Net
+from CarRacing.config import Args
+from CarRacing.net import Net
 
 
 class Agent:
@@ -73,6 +73,10 @@ class Agent:
             alpha, beta = self.net(state_tensor)[0]
         dist = Beta(alpha, beta)
         action = dist.sample()
+        
+        action = action.view(-1)
+        assert action.shape == (3,), f"Unexpected action shape: {action.shape}"
+
         log_prob = dist.log_prob(action).sum(dim=1)
         
         # Log action statistics occasionally

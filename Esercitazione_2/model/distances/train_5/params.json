@@ -1,0 +1,32 @@
+{
+    "checkpoint": 0,
+    "test": false,
+    "trial": 5,
+    "wandb_project": "CarRacing-v0-PPO",
+    "start_episode": 0,
+    "gamma": 0.99,
+    "clip_param": 0.4,
+    "ppo_epoch": 10,
+    "buffer_capacity": 500,
+    "batch_size": 128,
+    "seed": 0,
+    "action_repeat": 4,
+    "deathThreshold": 2000,
+    "deathByGreeneryThreshold": 35,
+    "maxDistance": 100,
+    "max_episode_steps": 10000,
+    "valueStackSize": 8,
+    "actionStack": 0,
+    "numberOfLasers": 5,
+    "actionMultiplier": [
+        2.0,
+        1.0,
+        1.0
+    ],
+    "actionBias": [
+        -1.0,
+        0.0,
+        0.0
+    ],
+    "saveLocation": "model/distances/train_5/"
+}

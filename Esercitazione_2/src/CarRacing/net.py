@@ -1,5 +1,5 @@
 import torch.nn as nn
-from config import Args
+from CarRacing.config import Args
 
 class Net(nn.Module):
     """
