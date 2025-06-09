@@ -1,0 +1,21 @@
+<class 'int'> 1
+Traceback (most recent call last):
+  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 61, in <module>
+    main()
+  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 30, in main
+    curState, reward, dead, reasonForDeath = env.step(action, t, agent)
+  File "/home/vcivale/prova/Esercitazione_2/src/CarRacing/environment.py", line 60, in step
+    rgbState, reward, terminated, truncated, info = self.env.step(
+  File "/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/wrappers/common.py", line 125, in step
+    observation, reward, terminated, truncated, info = self.env.step(action)
+  File "/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/wrappers/common.py", line 393, in step
+    return super().step(action)
+  File "/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/core.py", line 327, in step
+    return self.env.step(action)
+  File "/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/wrappers/common.py", line 283, in step
+    return env_step_passive_checker(self.env, action)
+  File "/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/utils/passive_env_checker.py", line 207, in env_step_passive_checker
+    result = env.step(action)
+  File "/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/envs/box2d/car_racing.py", line 551, in step
+    raise InvalidAction(
+gymnasium.error.InvalidAction: you passed the invalid action `[1. 1. 1.]`. The supported action_space is `Discrete(5)`

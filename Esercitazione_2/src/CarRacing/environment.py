@@ -1,141 +1,171 @@
+from .agent import Agent
 import gymnasium as gym
 import cv2
 import numpy as np
-from CarRacing.config import Args
+from .config import Args
 
-class CarRacingEnv:
-    def __init__(self, configs: Args, render_mode="rgb_array"):
-        self.env = gym.make("CarRacing-v3", render_mode=render_mode)
+class Env():
+    def __init__(self, configs: Args):
+        self.env = gym.make('CarRacing-v3', continuous=False)
         self.configs = configs
+        
         self.env.reset(seed=configs.seed)
-        self.reward_threshold = self.env.spec.reward_threshold
-        self.render_enabled = render_mode == "human"
+        self.env.action_space.seed(configs.seed)
+        self.env.observation_space.seed(configs.seed)
 
-        self.reward_buffer = []
-        self.car_position = None  # posizione aggiornata ad ogni reset
+        self.previousRewards = []
+        self.rewards = []
+        self.rewardThresh = self.env.spec.reward_threshold
+
+        # Buffer per distanze e azioni
+        self.laser_history = []
+        self.action_history = []
+
+        # Step globale per jerk penalty
+        self.global_step = 0
+
+        # Controllo rendering
+        self.render_enabled = False
 
     def reset(self):
-        self.timestep = 0
-        self.reward_buffer.clear()
-        img_rgb = self.env.reset()[0]  # gym >=0.26 returns (obs, info)
+        self.die = False
+        self.rewards = []
+        self.global_step = 0
         
-        # Calcolo posizione macchina per il ray casting
-        self.car_position = self.find_car_position(img_rgb)
+        obs = self.env.reset()[0]
+        distances, _ = self.preprocess(obs)
 
-        distances = self._get_laser_distances(img_rgb, self.car_position)
+        self.laser_history = [distances for _ in range(self.configs.valueStackSize)]
+        self.action_history = [0 for _ in range(self.configs.actionStack)]
 
-        # Init observation stack
-        self.stack = distances * self.configs.valueStackSize
-        assert len(self.stack) == self.configs.valueStackSize * self.configs.numberOfLasers
-        return np.array(self.stack, dtype=np.float32)
+        return self.build_stack()
 
-    def step(self, action, last_action=None, second_last_action=None):
-        total_reward = 0.0
-        done = False
-        reason = None
-        rgb_state = None
+    def step(self, action, last_action, second_last_action):
+        finalReward = 0
+        death = False
+        reason = 'NULL'
+        rgbState = None
+        green_counter = 0
 
-        for _ in range(self.configs.action_repeat):
-            rgb_state, reward, terminated, truncated, _ = self.env.step(
-                self.configs.actionTransformation(action)
-            )
+        self.action_history = self.action_history[1:] + [action]
+
+        for i in range(self.configs.action_repeat):
+            rgbState, reward, terminated, truncated, _ = self.env.step(action)
+            self.global_step += 1
+
             if self.render_enabled:
                 self.env.render()
 
-            # Penalty if off-road
-            if self._is_on_green(rgb_state):
-                reward -= 0.05
+            done = terminated or truncated
 
-            # Jerk penalty (if info is available)
-            if last_action is not None and second_last_action is not None:
-                jerk = np.linalg.norm(np.array(last_action) - np.array(second_last_action))
-                reward -= 10 * jerk
+            if self.checkGreen(rgbState):
+                green_counter += 1
+                finalReward -= 0.05
+            else:
+                green_counter = 0
 
-            # Brake penalty
-            reward -= action[2]
+            # Penalità sul jerk dopo i primi 1000 passi totali
+            jerkPenalty = 0.2 * abs(action - last_action) if self.global_step > 1000 else 0
+            finalReward += reward - jerkPenalty
 
-            total_reward += reward
-            self._store_reward(reward)
+            self.storeRewards(reward)
 
-            self.timestep += 1
-
-            # Termination conditions
-            if self._all_recent_rewards_negative():
-                done = True
-                reason = "Greenery"
-                total_reward -= 10
-                break
-            elif self.timestep > self.configs.deathThreshold:
-                done = True
-                reason = "Max timesteps"
-                break
-            elif terminated or truncated:
-                done = True
-                reason = "Env terminated"
+            if done:
+                death = True
+                reason = 'Environment termination'
                 break
 
-        distances = self._get_laser_distances(rgb_state, self.car_position)
+            if (self.configs.total_episodes > 100 and
+                self.checkExtendedPenalty() and i > 50):
+                death = True
+                reason = 'Greenery'
+                finalReward -= 10
+                break
 
-        # Update stack (drop oldest distances, append new)
-        self.stack = self.stack[self.configs.numberOfLasers:] + distances
-        assert len(self.stack) == self.configs.valueStackSize * self.configs.numberOfLasers
+            if green_counter > 30:
+                death = True
+                reason = 'Extended Greenery'
+                finalReward -= 10
+                break
 
-        return np.array(self.stack, dtype=np.float32), total_reward, done, reason
+        distances, _ = self.preprocess(rgbState)
+        self.laser_history = self.laser_history[1:] + [distances]
 
-    def render(self):
-        self.env.render()
+        return self.build_stack(), finalReward, death, reason
 
-    def _is_on_green(self, rgb):
-        gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
+    def build_stack(self):
+        distance_stack = []
+        for d in self.laser_history:
+            distance_stack.extend(d)
+
+        action_stack = []
+        for a in self.action_history:
+            encoded = self.configs.actionTransformation(a)
+            action_stack.extend(encoded)
+
+        full_stack = distance_stack + action_stack
+
+        expected = self.configs.valueStackSize * self.configs.numberOfLasers + 3 * self.configs.actionStack
+        if len(full_stack) != expected:
+            print(f"WARNING: Stack size mismatch! Got {len(full_stack)}, expected {expected}")
+            if len(full_stack) < expected:
+                full_stack.extend([0.0] * (expected - len(full_stack)))
+            else:
+                full_stack = full_stack[:expected]
+
+        return np.array(full_stack, dtype=np.float32)
+
+    def checkGreen(self, img_rgb):
+        _, gray = self.preprocess(img_rgb)
         region = gray[66:78, 44:52]
         return region.mean() < 100
 
-    def _get_laser_distances(self, rgb, car_pos):
+    def render(self, *args):
+        self.env.render(*args)
+
+    def checkPixelGreen(self, pixel):
+        return pixel < 10  # Soglia più robusta
+
+    def preprocess(self, rgb):
         gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)
-        _, binary = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
-        cropped = binary[0:83, 0:95]
+        _, gray = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY_INV)
+        gray = gray[0:83, 0:95]
+        temp = gray.copy()
+        temprgb = rgb.copy()[0:83, 0:95]
 
-        x, y = car_pos  # usa posizione attuale auto
+        x, y = 48, 73
+        locs = [None] * 5
+
+        for i in range(95):
+            if None not in locs:
+                break
+
+            checks = [
+                (0, (min(max(0, y - i), 82), min(max(x - i, 0), 94))),
+                (4, (min(max(0, y - i), 82), max(min(x + i, 94), 0))),
+                (2, (min(max(0, y - i), 82), x)),
+                (3, (min(max(0, y - i), 82), max(min(x + i // 2, 94), 0))),
+                (1, (min(max(0, y - i), 82), min(max(x - i // 2, 0), 94)))
+            ]
+
+            for idx, chk in checks:
+                if locs[idx] is None and self.checkPixelGreen(temp[chk]):
+                    locs[idx] = chk
+
         distances = []
+        for pt in locs:
+            if pt is None:
+                pt = (self.configs.maxDistance, self.configs.maxDistance)
+            dist = round(np.linalg.norm(np.array(pt) - np.array((y, x))), 2)
+            distances.append(dist if dist != 0 else self.configs.maxDistance)
 
-        for dx in [-1, -0.5, 0, 0.5, 1]:  # L, ML, M, MR, R
-            dist = self._ray_cast(cropped, x, y, dx)
-            distances.append(dist)
+        return distances, gray
 
-        return distances
+    def checkExtendedPenalty(self):
+        r = np.array(self.rewards)
+        return len(r) > 0 and np.all(r < 0)
 
-    def _ray_cast(self, img, x, y, dx):
-        max_dist = self.configs.maxDistance
-        for i in range(1, max_dist):
-            xi = int(np.clip(x + dx * i, 0, img.shape[1] - 1))
-            yi = int(np.clip(y - i, 0, img.shape[0] - 1))
-            if img[yi, xi] == 0:
-                return round(np.linalg.norm([xi - x, yi - y]), 2)
-        return float(max_dist)
-
-    def _all_recent_rewards_negative(self):
-        arr = np.array(self.reward_buffer)
-        return arr.size > 0 and np.all(arr < 0)
-
-    def _store_reward(self, reward):
-        if len(self.reward_buffer) >= self.configs.deathByGreeneryThreshold:
-            self.reward_buffer.pop(0)
-        self.reward_buffer.append(reward)
-
-    def find_car_position(self, rgb):
-        hsv = cv2.cvtColor(rgb, cv2.COLOR_BGR2HSV)
-        lower_red1 = np.array([0, 70, 50])
-        upper_red1 = np.array([10, 255, 255])
-        lower_red2 = np.array([170, 70, 50])
-        upper_red2 = np.array([180, 255, 255])
-        mask1 = cv2.inRange(hsv, lower_red1, upper_red1)
-        mask2 = cv2.inRange(hsv, lower_red2, upper_red2)
-        mask = cv2.bitwise_or(mask1, mask2)
-        moments = cv2.moments(mask)
-        if moments["m00"] > 0:
-            cx = int(moments["m10"] / moments["m00"])
-            cy = int(moments["m01"] / moments["m00"])
-            return cx, cy
-        else:
-            # fallback
-            return 48, 73
+    def storeRewards(self, reward):
+        if len(self.rewards) >= self.configs.deathByGreeneryThreshold:
+            self.rewards.pop(0)
+        self.rewards.append(reward)

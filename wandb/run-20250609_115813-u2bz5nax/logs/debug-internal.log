@@ -1,0 +1,15 @@
+{"time":"2025-06-09T11:58:13.170403213+02:00","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/home/vcivale/prova/wandb/run-20250609_115813-u2bz5nax/logs/debug-core.log"}
+{"time":"2025-06-09T11:58:13.505171917+02:00","level":"INFO","msg":"created new stream","id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:13.505226192+02:00","level":"INFO","msg":"stream: started","id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:13.505274734+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:13.505310333+02:00","level":"INFO","msg":"handler: started","stream_id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:13.505313624+02:00","level":"INFO","msg":"sender: started","stream_id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:13.745924067+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-09T11:58:14.048319268+02:00","level":"INFO","msg":"stream: closing","id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:14.048371392+02:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-09T11:58:14.048428247+02:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-09T11:58:15.077775921+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-09T11:58:15.327010576+02:00","level":"INFO","msg":"handler: closed","stream_id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:15.32707596+02:00","level":"INFO","msg":"sender: closed","stream_id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:15.327049546+02:00","level":"INFO","msg":"writer: Close: closed","stream_id":"u2bz5nax"}
+{"time":"2025-06-09T11:58:15.327155331+02:00","level":"INFO","msg":"stream: closed","id":"u2bz5nax"}

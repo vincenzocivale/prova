@@ -1,0 +1,15 @@
+/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/envs/box2d/car_racing.py:593: UserWarning: [33mWARN: You are calling render method without specifying any render mode. You can specify the render_mode at initialization, e.g. gym.make("CarRacing-v3", render_mode="rgb_array")[0m
+  gym.logger.warn(
+Dead at score=-325.34 || Timesteps=15 || Reason=Greenery
+Ep 0	Last score: -325.34
+--------------------
+Traceback (most recent call last):
+  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 60, in <module>
+    main()
+  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 48, in main
+    run.maybe_save_checkpoint(episodeIndex)
+  File "/home/vcivale/prova/Esercitazione_2/src/CarRacing/run.py", line 51, in maybe_save_checkpoint
+    self.save_model(episode=episode)
+  File "/home/vcivale/prova/Esercitazione_2/src/CarRacing/run.py", line 46, in save_model
+    torch.save(self.model.state_dict(), path)
+AttributeError: 'Agent' object has no attribute 'state_dict'

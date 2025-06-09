@@ -1,7 +1,0 @@
-{"time":"2025-06-08T10:27:56.198122339+02:00","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/home/vcivale/prova/Esercitazione_2/wandb/run-20250608_102756-5ekl6uw0/logs/debug-core.log"}
-{"time":"2025-06-08T10:27:56.536224405+02:00","level":"INFO","msg":"created new stream","id":"5ekl6uw0"}
-{"time":"2025-06-08T10:27:56.536281758+02:00","level":"INFO","msg":"stream: started","id":"5ekl6uw0"}
-{"time":"2025-06-08T10:27:56.536302422+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"5ekl6uw0"}
-{"time":"2025-06-08T10:27:56.536362154+02:00","level":"INFO","msg":"handler: started","stream_id":"5ekl6uw0"}
-{"time":"2025-06-08T10:27:56.536310969+02:00","level":"INFO","msg":"sender: started","stream_id":"5ekl6uw0"}
-{"time":"2025-06-08T10:27:56.789879338+02:00","level":"INFO","msg":"Starting system monitor"}

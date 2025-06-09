@@ -1,0 +1,15 @@
+{"time":"2025-06-09T13:51:47.31617845+02:00","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/home/vcivale/prova/wandb/run-20250609_135147-blb6rj76/logs/debug-core.log"}
+{"time":"2025-06-09T13:51:47.645441104+02:00","level":"INFO","msg":"created new stream","id":"blb6rj76"}
+{"time":"2025-06-09T13:51:47.645500865+02:00","level":"INFO","msg":"stream: started","id":"blb6rj76"}
+{"time":"2025-06-09T13:51:47.645536725+02:00","level":"INFO","msg":"handler: started","stream_id":"blb6rj76"}
+{"time":"2025-06-09T13:51:47.645551836+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"blb6rj76"}
+{"time":"2025-06-09T13:51:47.645546267+02:00","level":"INFO","msg":"sender: started","stream_id":"blb6rj76"}
+{"time":"2025-06-09T13:51:47.880081571+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-09T13:51:49.410234089+02:00","level":"INFO","msg":"stream: closing","id":"blb6rj76"}
+{"time":"2025-06-09T13:51:49.410301337+02:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-09T13:51:49.410336799+02:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-09T13:51:50.037324125+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-09T13:51:50.330044177+02:00","level":"INFO","msg":"handler: closed","stream_id":"blb6rj76"}
+{"time":"2025-06-09T13:51:50.330101866+02:00","level":"INFO","msg":"writer: Close: closed","stream_id":"blb6rj76"}
+{"time":"2025-06-09T13:51:50.330123667+02:00","level":"INFO","msg":"sender: closed","stream_id":"blb6rj76"}
+{"time":"2025-06-09T13:51:50.330196499+02:00","level":"INFO","msg":"stream: closed","id":"blb6rj76"}

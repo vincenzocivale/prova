@@ -1,0 +1,10 @@
+/home/vcivale/prova/.venv/lib/python3.10/site-packages/gymnasium/envs/box2d/car_racing.py:593: UserWarning: [33mWARN: You are calling render method without specifying any render mode. You can specify the render_mode at initialization, e.g. gym.make("CarRacing-v3", render_mode="rgb_array")[0m
+  gym.logger.warn(
+Traceback (most recent call last):
+  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 61, in <module>
+    main()
+  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 33, in main
+    loss, entropy = agent.update((prevState, action, a_logp, reward, curState), episodeIndex)
+  File "/home/vcivale/prova/Esercitazione_2/src/CarRacing/agent.py", line 60, in update
+    self.buffer[self.counter] = transition
+ValueError: could not broadcast input array from shape (17,) into shape (52,)

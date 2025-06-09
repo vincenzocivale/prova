@@ -1,0 +1,42 @@
+{
+  "os": "Linux-5.15.0-119-generic-x86_64-with-glibc2.35",
+  "python": "CPython 3.10.12",
+  "startedAt": "2025-06-09T11:45:39.339787Z",
+  "program": "/home/vcivale/prova/Esercitazione_2/CarRAcing.py",
+  "codePath": "Esercitazione_2/CarRAcing.py",
+  "git": {
+    "remote": "https://github.com/vincenzocivale/prova.git",
+    "commit": "436b49bc45a79dec3a533fcd4078a21f6f2b8bd6"
+  },
+  "email": "vincenzo.civale@edu.unifi.it",
+  "root": "/home/vcivale/prova",
+  "host": "targaryen",
+  "executable": "/home/vcivale/prova/.venv/bin/python",
+  "codePathLocal": "Esercitazione_2/CarRAcing.py",
+  "cpu_count": 20,
+  "cpu_count_logical": 20,
+  "gpu": "NVIDIA GeForce RTX 2080 Ti",
+  "gpu_count": 1,
+  "disk": {
+    "/": {
+      "total": "502391562240",
+      "used": "416797315072"
+    }
+  },
+  "memory": {
+    "total": "270352498688"
+  },
+  "cpu": {
+    "count": 20,
+    "countLogical": 20
+  },
+  "gpu_nvidia": [
+    {
+      "name": "NVIDIA GeForce RTX 2080 Ti",
+      "memoryTotal": "11811160064",
+      "cudaCores": 4352,
+      "architecture": "Turing"
+    }
+  ],
+  "cudaVersion": "12.2"
+}
