@@ -24,15 +24,15 @@ def main():
     for episodeIndex in range(configs.checkpoint, 100000):
         score = 0
         prevState = env.reset()
-        for t in range(10000):
+        MAX_ENV_STEPS = 5000
+        max_decision_steps = MAX_ENV_STEPS // configs.action_repeat
+        for t in range(max_decision_steps):
             action, a_logp = agent.select_action(prevState)
 
             curState, reward, dead, reasonForDeath = env.step(action, t, agent)
             
             if not configs.test:
                 loss, entropy = agent.update((prevState, action, a_logp, reward, curState), episodeIndex)
-                # log ogni passo update
-                run.log_training_step(episode=episodeIndex, step=t, reward=reward, loss=loss, entropy=entropy)
             
             score += reward
             prevState = curState

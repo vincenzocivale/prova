@@ -1,8 +1,0 @@
-Traceback (most recent call last):
-  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 60, in <module>
-    main()
-  File "/home/vcivale/prova/Esercitazione_2/CarRAcing.py", line 26, in main
-    prevState = env.reset()
-  File "/home/vcivale/prova/Esercitazione_2/src/CarRacing/environment.py", line 44, in reset
-    assert len(self.stack) == expected_size, f"Stack size mismatch: {len(self.stack)} vs {expected_size}"
-AssertionError: Stack size mismatch: 5 vs 40

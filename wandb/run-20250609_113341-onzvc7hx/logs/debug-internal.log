@@ -1,7 +1,0 @@
-{"time":"2025-06-09T11:33:41.689723385+02:00","level":"INFO","msg":"stream: starting","core version":"0.19.11","symlink path":"/home/vcivale/prova/wandb/run-20250609_113341-onzvc7hx/logs/debug-core.log"}
-{"time":"2025-06-09T11:33:42.024182199+02:00","level":"INFO","msg":"created new stream","id":"onzvc7hx"}
-{"time":"2025-06-09T11:33:42.024238299+02:00","level":"INFO","msg":"stream: started","id":"onzvc7hx"}
-{"time":"2025-06-09T11:33:42.024278415+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"onzvc7hx"}
-{"time":"2025-06-09T11:33:42.024289337+02:00","level":"INFO","msg":"sender: started","stream_id":"onzvc7hx"}
-{"time":"2025-06-09T11:33:42.024408639+02:00","level":"INFO","msg":"handler: started","stream_id":"onzvc7hx"}
-{"time":"2025-06-09T11:33:42.253649543+02:00","level":"INFO","msg":"Starting system monitor"}

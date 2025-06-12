@@ -58,15 +58,23 @@ class Env():
 
             done = terminated or truncated
 
+            # Penalità leggera per zone verdi
             if self.checkGreen(rgbState):
                 green_counter += 1
-                finalReward -= 0.05
+                reward -= 0.05
             else:
                 green_counter = 0
 
-            # Penalità sul jerk dopo i primi 1000 passi totali
+            # Penalità sul jerk dopo i primi 1000 step
             jerkPenalty = 0.2 * abs(action - last_action) if self.global_step > 1000 else 0
-            finalReward += reward - jerkPenalty
+
+            # progress_bonus = 0.1 if self.configs.actionTransformation(action)[0] > 0 else 0.0
+
+            reward -= jerkPenalty
+            # reward += progress_bonus
+
+            # Accumula reward (non moltiplichiamo arbitrariamente)
+            finalReward += reward
 
             self.storeRewards(reward)
 
@@ -79,19 +87,23 @@ class Env():
                 self.checkExtendedPenalty() and i > 50):
                 death = True
                 reason = 'Greenery'
-                finalReward -= 10
+                finalReward -= 2  # ⚠️ Ridotta penalità
                 break
 
             if green_counter > 30:
                 death = True
                 reason = 'Extended Greenery'
-                finalReward -= 10
+                finalReward -= 2  # ⚠️ Ridotta penalità
                 break
+
+        # Media finale del reward (opzionale ma consigliata)
+        finalReward /= self.configs.action_repeat
 
         distances, _ = self.preprocess(rgbState)
         self.laser_history = self.laser_history[1:] + [distances]
 
         return self.build_stack(), finalReward, death, reason
+
 
     def build_stack(self):
         distance_stack = []
