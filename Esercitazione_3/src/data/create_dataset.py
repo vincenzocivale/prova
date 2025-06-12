@@ -27,7 +27,7 @@ def load_h5ad_file(file_path):
     # Convert seq_data to numpy array, handling sparse matrix
     seq_data = adata.X
     if not isinstance(seq_data, np.ndarray):
-        seq_data = seq_data.toarray()
+        seq_data = np.vstack([row.toarray().squeeze() for row in seq_data])
     
     # In this context, labels are the gene expression values themselves
     labels = seq_data 
@@ -90,14 +90,13 @@ def create_dataset(data_fold_path, tokenizer, model):
     for file in progress_bar_files:
         file_path = os.path.join(data_fold_path, file)
         gene_ids, seq_data, labels = load_h5ad_file(file_path)
-        print(f"Processing file: {file} with {seq_data.shape[0]} cells and {seq_data.shape[1]} genes.")
         
         # Tokenize cell data
         tokenized_data = tokenizer.tokenize_cell_vectors(seq_data, gene_ids)
         
         # Progress bar for cells within each file
         progress_bar_cells = tqdm(enumerate(tokenized_data), total=len(tokenized_data), 
-                                desc=f"Processing cells in {file}", leave=True)
+
         
         # Process one cell at a time
         for cell_idx, (cell_tokens, cell_values) in progress_bar_cells:
