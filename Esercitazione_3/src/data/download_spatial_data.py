@@ -1,6 +1,7 @@
 import os
 from huggingface_hub import login, hf_hub_download, snapshot_download
 import pandas as pd
+from tqdm import tqdm
 
 def setup_huggingface(token):
     """
@@ -68,6 +69,6 @@ def download_first_n_samples(n, output_dir='data/raw'):
     # Get first n sample paths
     sample_paths = metadata['file_path'].head(n).tolist()
     
-    # Download each sample
-    for path in sample_paths:
+    # Download each sample with progress bar
+    for path in tqdm(sample_paths, desc="Downloading samples"):
         download_specific_sample(path, output_dir=f"{output_dir}")

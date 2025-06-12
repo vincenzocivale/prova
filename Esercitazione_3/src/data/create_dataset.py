@@ -90,14 +90,13 @@ def create_dataset(data_fold_path, tokenizer, model):
     for file in progress_bar_files:
         file_path = os.path.join(data_fold_path, file)
         gene_ids, seq_data, labels = load_h5ad_file(file_path)
-        print(f"File loaded")
         
         # Tokenize cell data
         tokenized_data = tokenizer.tokenize_cell_vectors(seq_data, gene_ids)
         
         # Progress bar for cells within each file
         progress_bar_cells = tqdm(enumerate(tokenized_data), total=len(tokenized_data), 
-                                desc=f"Processing cells in {file}", leave=False)
+
         
         # Process one cell at a time
         for cell_idx, (cell_tokens, cell_values) in progress_bar_cells:
