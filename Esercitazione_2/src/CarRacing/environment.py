@@ -61,12 +61,12 @@ class Env():
             # Penalità leggera per zone verdi
             if self.checkGreen(rgbState):
                 green_counter += 1
-                reward -= 0.05
+                reward -= 0.03
             else:
                 green_counter = 0
 
             # Penalità sul jerk dopo i primi 1000 step
-            jerkPenalty = 0.2 * abs(action - last_action) if self.global_step > 1000 else 0
+            jerkPenalty = 0.15 * abs(action - last_action) if self.global_step > 1000 else 0
 
             # progress_bonus = 0.1 if self.configs.actionTransformation(action)[0] > 0 else 0.0
 
@@ -87,13 +87,13 @@ class Env():
                 self.checkExtendedPenalty() and i > 50):
                 death = True
                 reason = 'Greenery'
-                finalReward -= 2  # ⚠️ Ridotta penalità
+                finalReward -= 2 
                 break
 
             if green_counter > 30:
                 death = True
                 reason = 'Extended Greenery'
-                finalReward -= 2  # ⚠️ Ridotta penalità
+                finalReward -= 2  
                 break
 
         # Media finale del reward (opzionale ma consigliata)

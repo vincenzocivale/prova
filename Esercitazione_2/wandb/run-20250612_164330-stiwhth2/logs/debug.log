@@ -1,0 +1,24 @@
+2025-06-12 16:43:30,104 INFO    MainThread:2959326 [wandb_setup.py:_flush():70] Current SDK version is 0.19.11
+2025-06-12 16:43:30,104 INFO    MainThread:2959326 [wandb_setup.py:_flush():70] Configure stats pid to 2959326
+2025-06-12 16:43:30,104 INFO    MainThread:2959326 [wandb_setup.py:_flush():70] Loading settings from /home/vcivale/.config/wandb/settings
+2025-06-12 16:43:30,104 INFO    MainThread:2959326 [wandb_setup.py:_flush():70] Loading settings from /home/vcivale/prova/Esercitazione_2/wandb/settings
+2025-06-12 16:43:30,105 INFO    MainThread:2959326 [wandb_setup.py:_flush():70] Loading settings from environment variables
+2025-06-12 16:43:30,105 INFO    MainThread:2959326 [wandb_init.py:setup_run_log_directory():724] Logging user logs to /home/vcivale/prova/Esercitazione_2/wandb/run-20250612_164330-stiwhth2/logs/debug.log
+2025-06-12 16:43:30,105 INFO    MainThread:2959326 [wandb_init.py:setup_run_log_directory():725] Logging internal logs to /home/vcivale/prova/Esercitazione_2/wandb/run-20250612_164330-stiwhth2/logs/debug-internal.log
+2025-06-12 16:43:30,105 INFO    MainThread:2959326 [wandb_init.py:monkeypatch_ipython():643] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x7ff380cf14b0>
+2025-06-12 16:43:30,105 INFO    MainThread:2959326 [wandb_init.py:init():852] calling init triggers
+2025-06-12 16:43:30,106 INFO    MainThread:2959326 [wandb_init.py:init():857] wandb.init called with sweep_config: {}
+config: {'checkpoint': 0, 'test': False, 'gamma': 0.99, 'action_repeat': 4, 'valueStackSize': 4, 'actionStack': 4, 'seed': 0, 'numberOfLasers': 5, 'deathThreshold': 2000, 'clip_param': 0.4, 'ppo_epoch': 10, 'buffer_capacity': 500, 'batch_size': 128, 'deathByGreeneryThreshold': 35, 'maxDistance': 100, 'total_episodes': 0, 'actionMultiplier': array([2., 1., 1.]), 'actionBias': array([-1.,  0.,  0.]), 'saveLocation': 'model/distances/train_5/', '_wandb': {}}
+2025-06-12 16:43:30,106 INFO    MainThread:2959326 [wandb_init.py:init():893] starting backend
+2025-06-12 16:43:30,106 INFO    MainThread:2959326 [wandb_init.py:init():897] sending inform_init request
+2025-06-12 16:43:30,114 INFO    MainThread:2959326 [backend.py:_multiprocessing_setup():101] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2025-06-12 16:43:30,114 INFO    MainThread:2959326 [wandb_init.py:init():907] backend started and connected
+2025-06-12 16:43:30,120 INFO    MainThread:2959326 [wandb_run.py:_label_probe_notebook():1376] probe notebook
+2025-06-12 16:43:30,121 INFO    MainThread:2959326 [wandb_init.py:init():1005] updated telemetry
+2025-06-12 16:43:30,132 INFO    MainThread:2959326 [wandb_init.py:init():1029] communicating run to backend with 90.0 second timeout
+2025-06-12 16:43:30,733 INFO    MainThread:2959326 [wandb_init.py:init():1104] starting run threads in backend
+2025-06-12 16:43:31,006 INFO    MainThread:2959326 [wandb_run.py:_console_start():2573] atexit reg
+2025-06-12 16:43:31,007 INFO    MainThread:2959326 [wandb_run.py:_redirect():2421] redirect: wrap_raw
+2025-06-12 16:43:31,007 INFO    MainThread:2959326 [wandb_run.py:_redirect():2490] Wrapping output streams.
+2025-06-12 16:43:31,008 INFO    MainThread:2959326 [wandb_run.py:_redirect():2513] Redirects installed.
+2025-06-12 16:43:31,014 INFO    MainThread:2959326 [wandb_init.py:init():1150] run started, returning control to user process
