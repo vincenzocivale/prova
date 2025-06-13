@@ -140,7 +140,7 @@ def evaluate_dataset_by_layer(
     layer_keys = [key for key in dataset.features if key.startswith("transformer_layer_")]
     
     # Pre-estrai tutti i tensori dal dataset in RAM
-    input_values = torch.stack([torch.tensor(x, dtype=torch.float32) for x in dataset['gene_expression_value']])
+    input_values = torch.stack([torch.tensor(x, dtype=torch.float32) for x in dataset['label']])
     layer_embeddings = {
         layer: torch.stack([torch.tensor(x, dtype=torch.float32) for x in dataset[layer]])
         for layer in layer_keys
