@@ -6,36 +6,6 @@ from typing import Dict
 import torch.nn.functional as F
 import pandas as pd
 
-def predict_expr_per_layer(dataset, model, device='cuda'):
-    results = []
-
-    model.to(device)
-    model.eval()
-
-    progress_bar = tqdm(dataset, desc="Processing examples", unit="example")
-    for example in progress_bar:
-        row_results = {}
-        for i in tqdm(range(12), desc="Processing layers", leave=False):  # 12 transformer layers
-            embedding = example[f"transformer_layer_{i}"]  # [seq_len, hidden_dim]
-            embedding = torch.tensor(embedding, dtype=torch.float32).unsqueeze(0).to(device)  # [1, seq_len, hidden_dim]
-
-            with torch.no_grad():
-                output = model.expr_decoder(embedding)["pred"]  # [1, seq_len, 1]
-
-            print(f"embedding shape: {embedding.shape}")
-
-            pred = output.squeeze(0).squeeze(-1).cpu().numpy()  # [seq_len]
-            row_results[f"layer_{i}_expr_pred"] = pred
-
-        if 'label' in example:
-            row_results["label"] = example["label"]
-        if 'file_origin' in example:
-            row_results["file_origin"] = example["file_origin"]
-
-        results.append(row_results)
-
-    return Dataset.from_list(results)
-
 
 def calculate_gene_expr_metrics(
     embeddings: torch.Tensor,
@@ -43,7 +13,7 @@ def calculate_gene_expr_metrics(
     masked_positions: torch.Tensor,
     non_padded_positions: torch.Tensor,
     skip_cell_embedding: bool = True
-) -> Dict[str, float]:
+    ) -> Dict[str, float]:
     """
     Calculate gene expression prediction metrics
     
@@ -64,12 +34,36 @@ def calculate_gene_expr_metrics(
     masked_positions = masked_positions.to(device)
     non_padded_positions = non_padded_positions.to(device)
     
-    # Skip cell embedding if requested
+    # Get predictions from embeddings BEFORE skipping cell embedding
+    if embeddings.dim() == 3:
+        # Standard embeddings [batch, seq, hidden] - need projection
+        if embeddings.size(-1) != 1:
+            predictions = embeddings.mean(dim=-1)
+        else:
+            predictions = embeddings.view(embeddings.size(0), embeddings.size(1))
+    elif embeddings.dim() == 2:
+        # Already 2D - these are likely already predictions
+        predictions = embeddings
+    else:
+        raise ValueError(f"Unexpected embeddings dimensions: {embeddings.shape}")
+    
+    
+    # Skip cell embedding if requested (AFTER getting predictions)
     if skip_cell_embedding:
-        embeddings = embeddings[:, 1:]
+        predictions = predictions[:, 1:]
         target_values = target_values[:, 1:]
         masked_positions = masked_positions[:, 1:]
         non_padded_positions = non_padded_positions[:, 1:]
+    
+    
+    # CRITICAL FIX: Handle dimension mismatch between predictions and targets
+    min_seq_len = min(predictions.size(1), target_values.size(1), 
+                      masked_positions.size(1), non_padded_positions.size(1))
+    
+    predictions = predictions[:, :min_seq_len]
+    target_values = target_values[:, :min_seq_len]
+    masked_positions = masked_positions[:, :min_seq_len]
+    non_padded_positions = non_padded_positions[:, :min_seq_len]
     
     # Create final mask (masked AND non-padded)
     eval_mask = masked_positions & non_padded_positions
@@ -77,15 +71,13 @@ def calculate_gene_expr_metrics(
     if eval_mask.sum() == 0:
         return {"mse": float('inf'), "mae": float('inf'), "pearson": 0.0}
     
-    # Get predictions from embeddings (assuming linear projection needed)
-    # If embeddings are already predictions, skip this step
-    if embeddings.size(-1) != 1:
-        # Simple linear projection from embedding dim to 1
-        predictions = embeddings.mean(dim=-1, keepdim=True).squeeze(-1)
-    else:
-        predictions = embeddings.squeeze(-1)
+    # Safety check: ensure predictions has exactly 2 dimensions
+    if predictions.dim() == 1:
+        predictions = predictions.unsqueeze(0)
+    elif predictions.dim() > 2:
+        predictions = predictions.view(predictions.size(0), -1)
     
-   # Ensure predictions and target_values are same shape as eval_mask
+    # Ensure predictions and target_values are same shape as eval_mask
     if predictions.dim() == 1:
         predictions = predictions.unsqueeze(0)
     if target_values.dim() == 1:
@@ -93,7 +85,6 @@ def calculate_gene_expr_metrics(
 
     pred_values = predictions[eval_mask]
     true_values = target_values[eval_mask]
-
     
     # Calculate metrics
     mse = F.mse_loss(pred_values, true_values).item()
@@ -150,10 +141,12 @@ def evaluate_dataset_by_layer(
     all_results = []
 
     for cell_idx in tqdm(range(n_cells), desc="Evaluating cells"):
+        
         cell_input = input_values[cell_idx:cell_idx+1]  # Keep batch dim
         
-        # Skip se la sequenza diventa vuota dopo aver rimosso il token cell embedding
-        if skip_cell_embedding and cell_input.shape[1] <= 1:
+        # Controlla se la sequenza diventa vuota dopo aver rimosso il token cell embedding
+        seq_len_after_skip = cell_input.shape[1] - 1 if skip_cell_embedding else cell_input.shape[1]
+        if seq_len_after_skip <= 0:
             continue
 
         if include_zero_genes:
@@ -166,7 +159,9 @@ def evaluate_dataset_by_layer(
         for layer_name, layer_tensor in layer_embeddings.items():
             cell_embeddings = layer_tensor[cell_idx:cell_idx+1]
 
-            if skip_cell_embedding and cell_embeddings.shape[1] <= 1:
+            # Controlla se gli embeddings diventano vuoti dopo skip
+            emb_seq_len_after_skip = cell_embeddings.shape[1] - 1 if skip_cell_embedding else cell_embeddings.shape[1]
+            if emb_seq_len_after_skip <= 0:
                 continue
 
             metrics = calculate_gene_expr_metrics(
@@ -180,9 +175,16 @@ def evaluate_dataset_by_layer(
             metrics['cell_idx'] = cell_idx
             all_results.append(metrics)
 
-        # Baseline (media per cella)
-        mean_value = cell_input[masked_values].mean().item() if masked_values.sum() > 0 else 0
-        mean_predictions = torch.full_like(cell_input, mean_value)
+        # Baseline (media per cella) - calcola DOPO il potenziale skip
+        if skip_cell_embedding:
+            baseline_input = cell_input[:, 1:]
+            baseline_masked = masked_values[:, 1:]
+        else:
+            baseline_input = cell_input
+            baseline_masked = masked_values
+            
+        mean_value = baseline_input[baseline_masked].mean().item() if baseline_masked.sum() > 0 else 0
+        mean_predictions = torch.full_like(baseline_input, mean_value)
 
         baseline_metrics = calculate_gene_expr_metrics(
             embeddings=mean_predictions.unsqueeze(-1),
