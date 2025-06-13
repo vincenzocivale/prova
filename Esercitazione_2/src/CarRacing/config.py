@@ -6,7 +6,7 @@ import numpy as np
 class Args():
 
     def __init__(self):
-        self.checkpoint = 0
+        self.checkpoint = 310
         trial = 5
         self.test = False
 

@@ -65,13 +65,13 @@ class Env():
             else:
                 green_counter = 0
 
-            # Penalità sul jerk dopo i primi 1000 step
+            # Penalità sul jerk 
             jerkPenalty = 0.15 * abs(action - last_action) if self.global_step > 1000 else 0
 
-            # progress_bonus = 0.1 if self.configs.actionTransformation(action)[0] > 0 else 0.0
+            progress_bonus = 0.1 if self.configs.actionTransformation(action)[0] > 0 else 0.0
 
             reward -= jerkPenalty
-            # reward += progress_bonus
+            reward += progress_bonus
 
             # Accumula reward (non moltiplichiamo arbitrariamente)
             finalReward += reward
