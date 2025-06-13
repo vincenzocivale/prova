@@ -95,7 +95,7 @@ def create_dataset(data_fold_path, tokenizer, model):
         tokenized_data = tokenizer.tokenize_cell_vectors(seq_data, gene_ids)
         
         # Progress bar for cells within each file
-        progress_bar_cells = tqdm(enumerate(tokenized_data), total=len(tokenized_data), 
+        progress_bar_cells = tqdm(enumerate(tokenized_data), total=len(tokenized_data)), 
 
         
         # Process one cell at a time
