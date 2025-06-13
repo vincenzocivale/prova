@@ -17,9 +17,9 @@ def load_h5ad_file(file_path):
         
     Returns:
         tuple: (gene_ids, seq_data, labels)
-               - gene_ids (np.ndarray): Gene names.
-               - seq_data (np.ndarray): Gene expression data (n_cells x n_genes).
-               - labels (np.ndarray): Labels (corresponding to seq_data in this context).
+                - gene_ids (np.ndarray): Gene names.
+                - seq_data (np.ndarray): Gene expression data (n_cells x n_genes).
+                - labels (np.ndarray): Labels (corresponding to seq_data in this context).
     """
     adata = sc.read_h5ad(file_path)
     gene_ids = adata.var_names.to_numpy()
@@ -27,32 +27,17 @@ def load_h5ad_file(file_path):
     # Convert seq_data to numpy array, handling sparse matrix
     seq_data = adata.X
     if not isinstance(seq_data, np.ndarray):
-        seq_data = np.vstack([row.toarray().squeeze() for row in seq_data])
+        seq_data = seq_data.toarray()
     
     # In this context, labels are the gene expression values themselves
     labels = seq_data 
     
-    return gene_ids, seq_data, labels
-
-def inizialize_record_dict(model):
-    """
-    Initializes a dictionary to store transformer input embeddings.
-    
-    Args:
-        model (torch.nn.Module): The PyTorch model containing a 'transformer' attribute.
-                                 
-    Returns:
-        dict: Dictionary with 'label' and 'transformer_input_embedding' keys.
-    """
-    layer_embeddings = {'label': []}
-    # We will now capture the input to the entire transformer block
-    layer_embeddings['transformer_input_embedding'] = [] 
-    return layer_embeddings
+    return gene_ids, seq_data[:5000], labels[:5000] # Limito a 100 cellule per file per velocità
 
 def create_dataset(data_fold_path, tokenizer, model):
     """
-    Creates a dataset by extracting the intermediate embeddings from each transformer layer
-    of a model for gene expression data.
+    Creates a dataset by extracting gene expression predictions from the intermediate embeddings
+    of each transformer layer of a model, along with the tokenized input values.
     
     Args:
         data_fold_path (str): Path to the folder containing .h5ad files.
@@ -61,133 +46,94 @@ def create_dataset(data_fold_path, tokenizer, model):
         
     Returns:
         datasets.Dataset: A Dataset object containing labels, file origin,
-                          and the intermediate embeddings from each transformer layer.
+                          tokenized input values, and the gene expression predictions
+                          from each transformer layer.
     """
-    # Initialize device (GPU if available, otherwise CPU)
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
-    model.eval()  # Set model to evaluation mode (disables dropout, etc.)
+    model.eval()
 
-    # Initialize the dictionary to store final data
     record_dict = {
         'label': [],
         'file_origin': [],
-        'transformer_input_embedding': [],  # Input to transformer (layer 0)
+        'tokenized_values': [] # Nuova colonna per i valori tokenizzati
     }
     
-    # Add keys for each transformer layer output
     num_layers = len(model.transformer.layers)
+    # Prepara le colonne per gli output di ciascun layer Transformer
     for i in range(num_layers):
         record_dict[f'transformer_layer_{i}_output'] = []
-    
-    # Find all .h5ad or .h5ad.gz files in the specified folder
+    record_dict['transformer_full_output'] = [] # L'output dell'ultimo layer, rinominato
+
+    # Cattura il decoder di espressione del modello per riutilizzarlo come "projection head"
+    expr_decoder_head = model.expr_decoder.fc
+
     files = [f for f in os.listdir(data_fold_path) if f.endswith(".h5ad.gz") or f.endswith(".h5ad")]
     print(f"Found {len(files)} files to process.")
     
-    # Progress bar for files
     progress_bar_files = tqdm(files, desc="Processing files", unit="file")
     
     for file in progress_bar_files:
         file_path = os.path.join(data_fold_path, file)
         gene_ids, seq_data, labels = load_h5ad_file(file_path)
+        print(f"Processing file: {file} with {seq_data.shape[0]} cells and {seq_data.shape[1]} genes.")
         
-        # Tokenize cell data
         tokenized_data = tokenizer.tokenize_cell_vectors(seq_data, gene_ids)
         
-        # Progress bar for cells within each file
-        progress_bar_cells = tqdm(enumerate(tokenized_data), total=len(tokenized_data)), 
-
+        progress_bar_cells = tqdm(enumerate(tokenized_data), total=len(tokenized_data), 
+                                  desc=f"Processing cells in {file}", leave=True)
         
-        # Process one cell at a time
         for cell_idx, (cell_tokens, cell_values) in progress_bar_cells:
-            # Dictionary to store intermediate embeddings for the current cell
-            intermediate_embeddings = {}
             
-            # Hook function to capture transformer input
-            def get_transformer_input_hook():
-                def pre_hook(module, input):
-                    transformer_input_tensor = input[0]
-                    intermediate_embeddings['transformer_input'] = transformer_input_tensor.detach().cpu()
-                    return input
-                return pre_hook
-            
-            # Hook function to capture each layer's output
-            def get_layer_output_hook(layer_idx):
-                def forward_hook(module, input, output):
-                    # output is the hidden states after this layer
-                    intermediate_embeddings[f'layer_{layer_idx}'] = output.detach().cpu()
-                return forward_hook
-            
-            # Register hooks
-            hooks = []
-            
-            # Hook for transformer input
-            transformer_input_hook = model.transformer.register_forward_pre_hook(get_transformer_input_hook())
-            hooks.append(transformer_input_hook)
-            
-            # Hooks for each transformer layer output
-            for i, layer in enumerate(model.transformer.layers):
-                layer_hook = layer.register_forward_hook(get_layer_output_hook(i))
-                hooks.append(layer_hook)
-            
-            # Move tensors to device (GPU/CPU)
+            # Converte i tensori per il dispositivo corretto
             cell_tokens = cell_tokens.to(device)
             cell_values = cell_values.to(device)
-            
-            # Create attention mask (assuming 0 is the padding value)
-            attention_mask = (cell_values != 0).to(device)
-            
+            attention_mask = (cell_values != 0).to(device) # Crea la maschera di attenzione
+
             with torch.no_grad():
-                # Perform the model's forward pass. The hooks will populate intermediate_embeddings.
-                _ = model(cell_tokens.unsqueeze(0), cell_values.unsqueeze(0), 
-                         attention_mask=attention_mask.unsqueeze(0))
-            
-            # Process and store all intermediate embeddings
+                # Memorizza i valori di espressione genica tokenizzati originali
+                # Questi sono i valori che il modello ha effettivamente "visto" e su cui basa le predizioni.
+                # Sono la tua base per il confronto con gli output di ciascun layer.
+                record_dict['tokenized_values'].append(cell_values.cpu().numpy().tolist())
+
+                # FASE 1: Calcola gli embedding di input al Transformer
+                # Questi passaggi replicano la parte iniziale del forward pass del modello
+                gene_embeddings = model.gene_encoder.embedding(cell_tokens.unsqueeze(0))
+                gene_embeddings = model.gene_encoder.enc_norm(gene_embeddings)
+
+                value_embeddings = model.value_encoder.linear1(cell_values.unsqueeze(0).unsqueeze(-1))
+                value_embeddings = model.value_encoder.linear2(value_embeddings)
+                value_embeddings = model.value_encoder.norm(value_embeddings)
+                value_embeddings = model.value_encoder.dropout(value_embeddings)
+
+                # Combina gli embedding di gene e valore per l'input al Transformer
+                current_embeddings = gene_embeddings + value_embeddings
+                
+                # FASE 2: Itera attraverso i layer del Transformer
+                # Per ogni strato, cattura l'output e lo proietta a valori di espressione genica.
+                # L'output di ogni strato del Transformer mantiene la dimensione (batch_size, seq_len, 512).
+                # Questo permette di analizzare come la rappresentazione contestuale evolve e quanto
+                # è "pronta" per essere decodificata in espressione genica.
+                for i, transformer_layer in enumerate(model.transformer.layers):
+                    current_embeddings = transformer_layer(current_embeddings)
+                    
+                    # Applica la testina di proiezione (expr_decoder_head) per ottenere le predizioni di espressione genica.
+                    # Questo trasforma i vettori di 512 dimensioni in valori scalari (1 dimensione) per ogni token,
+                    # permettendo di confrontare direttamente queste "predizioni intermedie" con i valori tokenizzati di input.
+                    predictions_from_layer = expr_decoder_head(current_embeddings).squeeze(-1)
+                    
+                    # Memorizza le predizioni dopo aver rimosso la dimensione del batch e convertito in lista
+                    record_dict[f'transformer_layer_{i}_output'].append(predictions_from_layer.squeeze(0).cpu().numpy().tolist())
+                
+                # FASE 3: Estrai anche l'output finale del modello per confronto
+                # current_embeddings a questo punto è l'output dell'ultimo strato del Transformer.
+                final_predictions = expr_decoder_head(current_embeddings).squeeze(-1)
+                record_dict['transformer_full_output'].append(final_predictions.squeeze(0).cpu().numpy().tolist())
+
+            # Memorizza l'etichetta originale e l'origine del file per la cella corrente
             record_dict['label'].append(labels[cell_idx].tolist())
             record_dict['file_origin'].append(file)
-            
-            # Store transformer input embedding
-            if 'transformer_input' in intermediate_embeddings:
-                input_embedding = intermediate_embeddings['transformer_input']
-                # Handle batch dimension removal more safely
-                if input_embedding.dim() > 2:
-                    processed_input_embedding = input_embedding[0].numpy()  # Take first batch item
-                else:
-                    processed_input_embedding = input_embedding.numpy()
-                
-                # Remove CLS token if present (assuming first token is CLS)
-                if processed_input_embedding.shape[0] == 5001:
-                    processed_input_embedding = processed_input_embedding[1:]
-                
-                record_dict['transformer_input_embedding'].append(processed_input_embedding.tolist())
-            else:
-                print(f"Warning: No transformer input captured for cell {cell_idx} in file {file}")
-                record_dict['transformer_input_embedding'].append([])
-            
-            # Store each layer's output embedding
-            for i in range(num_layers):
-                layer_key = f'layer_{i}'
-                if layer_key in intermediate_embeddings:
-                    layer_embedding = intermediate_embeddings[layer_key]
-                    # Handle batch dimension removal more safely
-                    if layer_embedding.dim() > 2:
-                        processed_layer_embedding = layer_embedding[0].numpy()  # Take first batch item
-                    else:
-                        processed_layer_embedding = layer_embedding.numpy()
-                    
-                    # Remove CLS token if present
-                    if processed_layer_embedding.shape[0] == 5001:
-                        processed_layer_embedding = processed_layer_embedding[1:]
-                    
-                    record_dict[f'transformer_layer_{i}_output'].append(processed_layer_embedding.tolist())
-                else:
-                    print(f"Warning: No layer {i} output captured for cell {cell_idx} in file {file}")
-                    record_dict[f'transformer_layer_{i}_output'].append([])
-            
-            # Remove all hooks after processing the current cell
-            for hook in hooks:
-                hook.remove()
     
-    # Create a Dataset object from the final dictionary
+    # Crea un oggetto Dataset finale
     dataset = Dataset.from_dict(record_dict)
     return dataset
