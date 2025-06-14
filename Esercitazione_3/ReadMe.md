@@ -43,21 +43,23 @@ However, a critical new finding is that **intermediate layers can outperform the
 
 The following table reports the main evaluation metrics (MSE, MAE, Pearson correlation) for each Transformer layer output compared to a simple mean baseline. Full results, including standard deviations, are available in `results/scgpt_layerwise_evaluation.csv`.
 
-| Layer                | MSE Mean   | MAE Mean   | Pearson Mean |
-| -------------------- | ---------- | ---------- | ------------ |
-| Mean Baseline        | **0.1507** | **0.2592** | 0.0000       |
-| Transformer Layer 0  | 42.8374    | 6.4056     | -0.0336      |
-| Transformer Layer 1  | 30.2377    | 5.3947     | -0.0361      |
-| Transformer Layer 2  | 30.8693    | 5.4469     | -0.0332      |
-| Transformer Layer 3  | 36.0490    | 5.9255     | -0.0325      |
-| Transformer Layer 4  | 64.7740    | 8.0070     | -0.0164      |
-| Transformer Layer 5  | 108.6514   | 10.3867    | -0.0194      |
-| Transformer Layer 6  | 102.0115   | 10.0561    | 0.0078       |
-| Transformer Layer 7  | 72.9351    | 8.4405     | 0.0263       |
-| Transformer Layer 8  | 85.7650    | 9.0805     | 0.0288       |
-| Transformer Layer 9  | 195.4080   | 13.8542    | 0.0315       |
-| Transformer Layer 10 | 450.0759   | 21.1728    | 0.0271       |
-| Transformer Layer 11 | 381.0563   | 19.5018    | 0.0227       |
+| Layer                | MSE Mean   | MAE Mean   | 
+| -------------------- | ---------- | ---------- | 
+| Layer                | MSE Mean   | MAE Mean   | 
+| -------------------- | ---------- | ---------- | 
+| Mean Baseline        | **0.1507** | **0.2592** |
+| Transformer Layer 0  | 42.8374    | 6.4056     |
+| Transformer Layer 1  | 30.2377    | 5.3947     |
+| Transformer Layer 2  | 30.8693    | 5.4469     |
+| Transformer Layer 3  | 36.0490    | 5.9255     |
+| Transformer Layer 4  | 64.7740    | 8.0070     |
+| Transformer Layer 5  | 108.6514   | 10.3867    |
+| Transformer Layer 6  | 102.0115   | 10.0561    |
+| Transformer Layer 7  | 72.9351    | 8.4405     |
+| Transformer Layer 8  | 85.7650    | 9.0805     |
+| Transformer Layer 9  | 195.4080   | 13.8542    |
+| Transformer Layer 10 | 450.0759   | 21.1728    |
+| Transformer Layer 11 | 381.0563   | 19.5018    |
 
 **Note**:
 
