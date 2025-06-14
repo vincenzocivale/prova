@@ -2,18 +2,17 @@
 
 *Exploring Intermediate Layer Embeddings of scGPT on Spatial Transcriptomics Data*
 
-## Project Overview
 
+## Introduction
 
-This repository contains the solutions to the exercises assigned during the Hugging Face library hands-on session. While the initial exercises involved standard applications and usages of the library (such as dataset loading, model fine-tuning, and evaluation), this README focuses exclusively on the final, personal project, where a more exploratory and original analysis was conducted.
+This repository contains the solutions to the exercises assigned during the Hugging Face library hands-on session. While the initial exercises involved standard applications and usages of the library — such as dataset loading, model fine-tuning, and evaluation — this README focuses exclusively on the final, personal project, where a more exploratory and original analysis was conducted.
 
-This project investigates the capabilities of **Foundation Models** in single-cell genomics, focusing on their performance in *zero-shot* scenarios — that is, evaluating model outputs without any task-specific fine-tuning. Foundation Models have gained prominence due to their ability to learn universal data representations from large datasets and generalize effectively across diverse tasks.
+This project investigates the capabilities of **Foundation Models** in the field of single-cell genomics, with a particular focus on their performance in *zero-shot* scenarios — that is, evaluating model outputs without any task-specific fine-tuning. Foundation Models are renowned for their ability to learn universal data representations from large datasets and generalize effectively across diverse tasks.
 
-Inspired by the article ["Zero-shot evaluation reveals limitations of single-cell foundation models"](https://doi.org/...), by Kedzierska et al. (2025), this work extends the original analysis by examining *intermediate* transformer layer embeddings of the scGPT model, rather than restricting evaluation solely to the final layer. The goal is to understand whether earlier layers, which capture more "local" or less refined representations, might offer valuable or even superior insights for downstream tasks in a zero-shot context.
+The idea to explore *intermediate embeddings* — rather than limiting the evaluation to the final layer — was inspired by the paper ["Perception Encoder: The best visual embeddings are not at the output of the network"](https://arxiv.org/abs/2504.13181), which suggests that the most informative representations for certain tasks may reside in the inner layers of a model rather than at its output.
 
-## Background and Motivation
+Additionally, this work builds upon the study ["Zero-shot evaluation reveals limitations of single-cell foundation models"](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-025-03574-x?utm_source=bmc_etoc&utm_medium=email&utm_campaign=CONR_13059_AWA1_GL_DTEC_054CI_TOC-250419#Sec3) by Kedzierska et al. (2025), a team of Microsoft researchers, which highlighted that models such as **scGPT** and Geneformer can sometimes underperform in zero-shot scenarios — in some cases being outperformed by simpler baselines. However, their evaluation focused exclusively on embeddings from the final model layer, leaving open the question of whether intermediate representations might offer improved predictive utility.
 
-Kedzierska et al. show that despite their promise, models like **scGPT** and Geneformer may struggle in zero-shot evaluations, sometimes performing worse than simple baselines. Their evaluation, however, is based primarily on embeddings from the model’s final layer. Given that transformer models encode information hierarchically, intermediate layers might capture different, possibly more useful, biological signals that the final layer alone does not reveal.
 
 ## Data and Model
 
