@@ -1,0 +1,14 @@
+layer,mse_mean,mse_std,mae_mean,mae_std,pearson_mean,pearson_std
+mean_baseline,0.1507,0.0457,0.2592,0.0331,0.0,0.0
+transformer_layer_0_output,42.8374,1.0747,6.4056,0.0858,-0.0336,0.0101
+transformer_layer_10_output,450.0759,5.6113,21.1728,0.1271,0.0271,0.0058
+transformer_layer_11_output,381.0563,2.0567,19.5018,0.0508,0.0227,0.0056
+transformer_layer_1_output,30.2377,0.7948,5.3947,0.0749,-0.0361,0.0127
+transformer_layer_2_output,30.8693,1.148,5.4469,0.1031,-0.0332,0.0155
+transformer_layer_3_output,36.049,0.8634,5.9255,0.0677,-0.0325,0.0174
+transformer_layer_4_output,64.774,1.7264,8.007,0.111,-0.0164,0.0206
+transformer_layer_5_output,108.6514,3.5956,10.3867,0.1762,-0.0194,0.0179
+transformer_layer_6_output,102.0115,3.1331,10.0561,0.1611,0.0078,0.0122
+transformer_layer_7_output,72.9351,2.8754,8.4405,0.1839,0.0263,0.0074
+transformer_layer_8_output,85.765,6.543,9.0805,0.3858,0.0288,0.0062
+transformer_layer_9_output,195.408,4.5572,13.8542,0.1567,0.0315,0.0052
