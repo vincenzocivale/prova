@@ -6,7 +6,7 @@ import numpy as np
 class Args():
 
     def __init__(self):
-        self.checkpoint = 310
+        self.checkpoint = 0
         trial = 5
         self.test = False
 
@@ -27,6 +27,7 @@ class Args():
         self.deathByGreeneryThreshold = 35
         self.maxDistance = 100
         self.total_episodes = 0 
+        self.max_episode_steps = 500  # Numero massimo di step per episodio
 
         self.actionMultiplier = np.array([2., 1.0, 1.0])
         self.actionBias = np.array([-1.0, 0.0, 0.0])
