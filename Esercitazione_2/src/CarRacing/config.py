@@ -52,7 +52,23 @@ class Args():
         return ret
     
     def actionTransformation(self, action):
-        return action*self.actionMultiplier + self.actionBias
+        """
+        Map discrete action indices to continuous action vectors for CarRacing
+        Actions: 0=straight, 1=left, 2=right, 3=brake, 4=accelerate
+        """
+        if isinstance(action, (int, np.integer)):
+            # Discrete action mapping
+            action_map = {
+                0: np.array([0.0, 0.0, 0.0]),      # No action (coast)
+                1: np.array([0.0, -1.0, 0.0]),     # Turn left
+                2: np.array([0.0, 1.0, 0.0]),      # Turn right  
+                3: np.array([0.0, 0.0, 0.8]),      # Brake
+                4: np.array([1.0, 0.0, 0.0])       # Accelerate
+            }
+            return action_map.get(action, action_map[0])
+        else:
+            # Continuous action (legacy support)
+            return action*self.actionMultiplier + self.actionBias
         
 
 def configure():
