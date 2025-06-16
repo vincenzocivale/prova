@@ -1,0 +1,74 @@
+Starting training for 15 epochs
+Device: cuda
+Batch size: 128
+
+Epoch 1/15
+                                                                        
+Train Loss: 1.5143, Val Metrics: {'loss': 1.2407567590475082, 'accuracy': 0.5504}
+✓ Best model updated!
+
+Epoch 2/15
+Train Loss: 1.1961, Val Metrics: {'loss': 1.1029451370239258, 'accuracy': 0.6088}
+✓ Best model updated!
+
+Epoch 3/15
+Train Loss: 1.0453, Val Metrics: {'loss': 1.0837183237075805, 'accuracy': 0.613}
+✓ Best model updated!
+
+Epoch 4/15
+Train Loss: 0.9569, Val Metrics: {'loss': 0.9742089167237282, 'accuracy': 0.6594}
+✓ Best model updated!
+
+Epoch 5/15
+Train Loss: 0.8898, Val Metrics: {'loss': 0.8519542336463928, 'accuracy': 0.7024}
+✓ Best model updated!
+
+Epoch 6/15
+Train Loss: 0.8233, Val Metrics: {'loss': 0.7638009175658226, 'accuracy': 0.733}
+✓ Best model updated!
+
+Epoch 7/15
+Train Loss: 0.7851, Val Metrics: {'loss': 0.8307042688131332, 'accuracy': 0.7124}
+No improvement for 1 epochs
+
+Epoch 8/15
+Train Loss: 0.7479, Val Metrics: {'loss': 0.7266128897666931, 'accuracy': 0.7528}
+✓ Best model updated!
+
+Epoch 9/15
+Train Loss: 0.7125, Val Metrics: {'loss': 0.6902000844478607, 'accuracy': 0.7646}
+✓ Best model updated!
+
+Epoch 10/15
+Train Loss: 0.6795, Val Metrics: {'loss': 0.86166403144598, 'accuracy': 0.7192}
+No improvement for 1 epochs
+
+Epoch 11/15
+Train Loss: 0.6551, Val Metrics: {'loss': 0.694909043610096, 'accuracy': 0.766}
+✓ Best model updated!
+
+Epoch 12/15
+Train Loss: 0.6367, Val Metrics: {'loss': 0.691471978276968, 'accuracy': 0.7664}
+✓ Best model updated!
+
+Epoch 13/15
+Train Loss: 0.6202, Val Metrics: {'loss': 0.5978748992085456, 'accuracy': 0.7922}
+✓ Best model updated!
+
+Epoch 14/15
+Train Loss: 0.6011, Val Metrics: {'loss': 0.6620557852089405, 'accuracy': 0.769}
+No improvement for 1 epochs
+
+Epoch 15/15
+Train Loss: 0.5846, Val Metrics: {'loss': 0.625201053917408, 'accuracy': 0.7804}
+No improvement for 2 epochs
+Loading best model weights
+
+Final Test Metrics: {'loss': 0.6288939273055596, 'accuracy': 0.7833}
+
+Student baseline test accuracy: 0.7833
+Model saved to models/rescnn_ch16_d2_c10_student_baseline.pth
+Knowledge Distillation Trainer created!
+Training student model with knowledge distillation...
+Training set size: 45000
+Validation set size: 5000
