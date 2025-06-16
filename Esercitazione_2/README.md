@@ -1,4 +1,4 @@
-# Esercitazione 2 - Deep Reinforcement Learning Laboratory
+# Deep Reinforcement Learning Laboratory
 
 ## Index
 
@@ -13,15 +13,16 @@ To address the CartPole environment, a reimplementation of the REINFORCE algorit
 The adopted neural network is a simple feed-forward architecture with two hidden layers of 128 neurons each and ReLU activations. The inputs (position, velocity, pole angle, and angular velocity) are mapped to two logits corresponding to the available actions.
 Action selection is performed using a categorical distribution derived from the softmax of the logits, from which actions are sampled stochastically. This approach ensures a good balance between exploration and exploitation and aligns more closely with the probabilistic nature of the REINFORCE algorithm compared to deterministic selection.
 
-![Cartpole Reward during Training](images/cartpole_reinforce_training.png)
+![Cartpole Agent](/Esercitazione_2/record/Cart_Pole.mp4)
 
 The graph shows the trend in the reward obtained per episode during training, together with the moving average over 100 episodes. After an initial phase of gradual learning, the agent achieves high performance around episode 120, with rewards stabilising close to the maximum (500).
 
 However, two significant phases of instability are observed, around episodes 200 and 500, indicating a temporary degradation in performance. These fluctuations are typical of the REINFORCE algorithm, which is sensitive to trajectory variance and the absence of a baseline.
 
 
-
-<video src="/Esercitazione_2/record/Cart_Pole.mp4" controls width="600"></video>
+<video width="600" controls>
+  <source src="https://raw.githubusercontent.com/vincenzocivale/DLA_Laboratorires/main/Esercitazione_2/record/Cart_Pole.mp4" type="video/mp4">
+</video>
 
 
 ### **Exercise 2: REINFORCE with Baseline CartPole**
@@ -102,7 +103,9 @@ Finally, PPO's “clipped” objective function ensured stable and controlled po
 
 Despite various attempts, the results obtained in CarRacing-v3 were disappointing overall. As shown in the video, the agent proceeds very slowly while remaining on the road, highlighting a conservative policy that limits the reward.
 
-<video src="/Esercitazione_2/record/carracing_test_current.mp4" controls width="600"></video>
+<video width="600" controls>
+  <source src="https://raw.githubusercontent.com/vincenzocivale/DLA_Laboratorires/main/Esercitazione_2/record/carracing_test_current.mp4" type="video/mp4">
+</video>
 
 The main causes may be:
 
