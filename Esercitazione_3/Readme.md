@@ -1,4 +1,10 @@
 
+## Table of Contents
+
+1. [Exercise 1 – Sentiment Analysis with BERT](#exercise-1--sentiment-analysis-with-bert)
+2. [Exercise 2 – Fine-tuning DistilBERT](#exercise-2--fine-tuning-distilbert)
+3. [Exercise 3 – Zero-Shot Evaluation of Single-Cell Foundation Models](#exercise-3--zero-shot-evaluation-of-single-cell-foundation-models)
+
 ### **Exercise 1 – Sentiment Analysis with BERT**
 
 The aim of the exercise was to build a sentiment analysis pipeline using a pre-trained transformer model, specifically DistilBERT, applied to the Rotten Tomatoes dataset provided by Cornell.
