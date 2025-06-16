@@ -19,10 +19,7 @@ The graph shows the trend in the reward obtained per episode during training, to
 
 However, two significant phases of instability are observed, around episodes 200 and 500, indicating a temporary degradation in performance. These fluctuations are typical of the REINFORCE algorithm, which is sensitive to trajectory variance and the absence of a baseline.
 
-
-<video width="600" controls>
-  <source src="https://raw.githack.com/vincenzocivale/DLA_Laboratorires/main/Esercitazione_2/record/Cart_Pole.mp4" type="video/mp4">
-</video>
+[Cart_Pole.webm](https://github.com/user-attachments/assets/b4b65870-ba21-4e0b-96ad-fb1441740fa9)
 
 
 ### **Exercise 2: REINFORCE with Baseline CartPole**
@@ -103,9 +100,9 @@ Finally, PPO's “clipped” objective function ensured stable and controlled po
 
 Despite various attempts, the results obtained in CarRacing-v3 were disappointing overall. As shown in the video, the agent proceeds very slowly while remaining on the road, highlighting a conservative policy that limits the reward.
 
-<video width="600" controls>
-  <source src="https://raw.githubusercontent.com/vincenzocivale/DLA_Laboratorires/main/Esercitazione_2/record/carracing_test_current.mp4" type="video/mp4">
-</video>
+[carracing_test_current.webm](https://github.com/user-attachments/assets/3602e2bd-c9cd-4c07-bb62-f5b944b837ea)
+
+
 
 The main causes may be:
 
