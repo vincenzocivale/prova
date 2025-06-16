@@ -1,0 +1,133 @@
+Starting training for 50 epochs
+Device: cuda
+Batch size: 256
+
+Epoch 1/50
+                                                                        
+Train Loss: 0.7706, Val Metrics: {'loss': 0.2020052776982387, 'accuracy': 0.9371666666666667}
+✓ Best model updated!
+
+Epoch 2/50
+Train Loss: 0.3509, Val Metrics: {'loss': 0.14659038900087276, 'accuracy': 0.9568333333333333}
+✓ Best model updated!
+
+Epoch 3/50
+Train Loss: 0.2845, Val Metrics: {'loss': 0.12185067310929298, 'accuracy': 0.9641666666666666}
+✓ Best model updated!
+
+Epoch 4/50
+Train Loss: 0.2541, Val Metrics: {'loss': 0.10580569148684542, 'accuracy': 0.97}
+✓ Best model updated!
+
+Epoch 5/50
+Train Loss: 0.2266, Val Metrics: {'loss': 0.0925879053150614, 'accuracy': 0.9721666666666666}
+✓ Best model updated!
+
+Epoch 6/50
+Train Loss: 0.2141, Val Metrics: {'loss': 0.09163703567658861, 'accuracy': 0.9721666666666666}
+No improvement for 1 epochs
+
+Epoch 7/50
+Train Loss: 0.2031, Val Metrics: {'loss': 0.08258930593729019, 'accuracy': 0.9756666666666667}
+✓ Best model updated!
+
+Epoch 8/50
+Train Loss: 0.1954, Val Metrics: {'loss': 0.08024771185591817, 'accuracy': 0.9765}
+✓ Best model updated!
+
+Epoch 9/50
+Train Loss: 0.1843, Val Metrics: {'loss': 0.07708919188007712, 'accuracy': 0.9761666666666666}
+No improvement for 1 epochs
+
+Epoch 10/50
+Train Loss: 0.1755, Val Metrics: {'loss': 0.07423575587260227, 'accuracy': 0.9765}
+No improvement for 2 epochs
+
+Epoch 11/50
+Train Loss: 0.1680, Val Metrics: {'loss': 0.07745876256376505, 'accuracy': 0.976}
+No improvement for 3 epochs
+
+Epoch 12/50
+Train Loss: 0.1690, Val Metrics: {'loss': 0.06671332358382642, 'accuracy': 0.9791666666666666}
+✓ Best model updated!
+
+Epoch 13/50
+Train Loss: 0.1624, Val Metrics: {'loss': 0.07240889865594606, 'accuracy': 0.979}
+No improvement for 1 epochs
+
+Epoch 14/50
+Train Loss: 0.1571, Val Metrics: {'loss': 0.06274290569126606, 'accuracy': 0.9811666666666666}
+✓ Best model updated!
+
+Epoch 15/50
+Train Loss: 0.1550, Val Metrics: {'loss': 0.06749776549016435, 'accuracy': 0.9795}
+No improvement for 1 epochs
+
+Epoch 16/50
+Train Loss: 0.1512, Val Metrics: {'loss': 0.0642900326444457, 'accuracy': 0.9796666666666667}
+No improvement for 2 epochs
+
+Epoch 17/50
+Train Loss: 0.1499, Val Metrics: {'loss': 0.062205312230313815, 'accuracy': 0.9825}
+✓ Best model updated!
+
+Epoch 18/50
+Train Loss: 0.1493, Val Metrics: {'loss': 0.0616197211202234, 'accuracy': 0.981}
+No improvement for 1 epochs
+
+Epoch 19/50
+Train Loss: 0.1408, Val Metrics: {'loss': 0.06021772177579502, 'accuracy': 0.9808333333333333}
+No improvement for 2 epochs
+
+Epoch 20/50
+Train Loss: 0.1426, Val Metrics: {'loss': 0.056324012810364366, 'accuracy': 0.9843333333333333}
+✓ Best model updated!
+
+Epoch 21/50
+Train Loss: 0.1417, Val Metrics: {'loss': 0.05920191830955446, 'accuracy': 0.9821666666666666}
+No improvement for 1 epochs
+
+Epoch 22/50
+Train Loss: 0.1368, Val Metrics: {'loss': 0.056340406726424895, 'accuracy': 0.9828333333333333}
+No improvement for 2 epochs
+
+Epoch 23/50
+Train Loss: 0.1372, Val Metrics: {'loss': 0.060647475300356746, 'accuracy': 0.9803333333333333}
+No improvement for 3 epochs
+
+Epoch 24/50
+Train Loss: 0.1336, Val Metrics: {'loss': 0.05965829625104865, 'accuracy': 0.9821666666666666}
+No improvement for 4 epochs
+
+Epoch 25/50
+Train Loss: 0.1293, Val Metrics: {'loss': 0.05192537031446894, 'accuracy': 0.984}
+No improvement for 5 epochs
+
+Epoch 26/50
+Train Loss: 0.1311, Val Metrics: {'loss': 0.059806827610979475, 'accuracy': 0.9816666666666667}
+No improvement for 6 epochs
+
+Epoch 27/50
+Train Loss: 0.1272, Val Metrics: {'loss': 0.05815101678793629, 'accuracy': 0.9826666666666667}
+No improvement for 7 epochs
+
+Epoch 28/50
+Train Loss: 0.1289, Val Metrics: {'loss': 0.05660830585596462, 'accuracy': 0.982}
+No improvement for 8 epochs
+Early stopping triggered after 28 epochs
+Loading best model weights
+
+Final Test Metrics: {'loss': 0.04490354231675155, 'accuracy': 0.9863}
+
+--- Results Summary for medium ---
+Standard MLP Test Accuracy: 0.9833
+Residual MLP Test Accuracy: 0.9863
+
+==================================================
+Testing deep architecture
+==================================================
+
+--- Standard MLP ---
+Parameters: 133,514
+Training set size: 54000
+Validation set size: 6000

@@ -1,0 +1,7 @@
+{"time":"2025-06-15T21:43:00.546554209+02:00","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/home/vcivale/prova/Esercitazione_1/wandb/run-20250615_214259-e5218awt/logs/debug-core.log"}
+{"time":"2025-06-15T21:43:00.860537181+02:00","level":"INFO","msg":"stream: created new stream","id":"e5218awt"}
+{"time":"2025-06-15T21:43:00.860577963+02:00","level":"INFO","msg":"stream: started","id":"e5218awt"}
+{"time":"2025-06-15T21:43:00.860592878+02:00","level":"INFO","msg":"handler: started","stream_id":"e5218awt"}
+{"time":"2025-06-15T21:43:00.860592386+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"e5218awt"}
+{"time":"2025-06-15T21:43:00.860627187+02:00","level":"INFO","msg":"sender: started","stream_id":"e5218awt"}
+{"time":"2025-06-15T21:43:01.09631141+02:00","level":"INFO","msg":"Starting system monitor"}

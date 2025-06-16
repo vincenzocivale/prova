@@ -1,0 +1,16 @@
+{"time":"2025-06-15T15:45:57.522483828+02:00","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/home/vcivale/prova/Esercitazione_1/wandb/run-20250615_154556-qfaqkz1d/logs/debug-core.log"}
+{"time":"2025-06-15T15:45:58.81301589+02:00","level":"INFO","msg":"stream: created new stream","id":"qfaqkz1d"}
+{"time":"2025-06-15T15:45:58.813057618+02:00","level":"INFO","msg":"stream: started","id":"qfaqkz1d"}
+{"time":"2025-06-15T15:45:58.813067681+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"qfaqkz1d"}
+{"time":"2025-06-15T15:45:58.81309517+02:00","level":"INFO","msg":"handler: started","stream_id":"qfaqkz1d"}
+{"time":"2025-06-15T15:45:58.813070821+02:00","level":"INFO","msg":"sender: started","stream_id":"qfaqkz1d"}
+{"time":"2025-06-15T15:45:59.118375169+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-15T15:57:25.724476846+02:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-15T15:57:25.724557513+02:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-15T15:57:26.404373288+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-15T15:57:26.725888629+02:00","level":"INFO","msg":"handler: operation stats","stats":{}}
+{"time":"2025-06-15T15:57:26.74681364+02:00","level":"INFO","msg":"stream: closing","id":"qfaqkz1d"}
+{"time":"2025-06-15T15:57:26.746884252+02:00","level":"INFO","msg":"handler: closed","stream_id":"qfaqkz1d"}
+{"time":"2025-06-15T15:57:26.74690654+02:00","level":"INFO","msg":"writer: Close: closed","stream_id":"qfaqkz1d"}
+{"time":"2025-06-15T15:57:26.746918963+02:00","level":"INFO","msg":"sender: closed","stream_id":"qfaqkz1d"}
+{"time":"2025-06-15T15:57:26.746988064+02:00","level":"INFO","msg":"stream: closed","id":"qfaqkz1d"}

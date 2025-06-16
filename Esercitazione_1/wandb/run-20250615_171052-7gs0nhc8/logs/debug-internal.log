@@ -1,0 +1,19 @@
+{"time":"2025-06-15T17:10:53.686411184+02:00","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/home/vcivale/prova/Esercitazione_1/wandb/run-20250615_171052-7gs0nhc8/logs/debug-core.log"}
+{"time":"2025-06-15T17:10:54.831937516+02:00","level":"INFO","msg":"stream: created new stream","id":"7gs0nhc8"}
+{"time":"2025-06-15T17:10:54.831996524+02:00","level":"INFO","msg":"stream: started","id":"7gs0nhc8"}
+{"time":"2025-06-15T17:10:54.832014829+02:00","level":"INFO","msg":"handler: started","stream_id":"7gs0nhc8"}
+{"time":"2025-06-15T17:10:54.832047367+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"7gs0nhc8"}
+{"time":"2025-06-15T17:10:54.832019747+02:00","level":"INFO","msg":"sender: started","stream_id":"7gs0nhc8"}
+{"time":"2025-06-15T17:10:55.037710066+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-15T17:26:38.932659201+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-15T17:26:38.954227721+02:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-06-15T17:26:39.029465337+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-15T17:26:39.047802841+02:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-06-15T17:26:39.121385784+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-15T17:26:39.140379869+02:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-06-15T17:26:39.214029282+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-15T17:26:39.233295318+02:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-06-15T17:26:39.238825586+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-15T17:26:39.281267283+02:00","level":"INFO","msg":"Resuming system monitor"}
+{"time":"2025-06-15T17:44:42.7790459+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-15T17:44:42.800403384+02:00","level":"INFO","msg":"Resuming system monitor"}

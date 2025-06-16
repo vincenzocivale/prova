@@ -1,0 +1,16 @@
+{"time":"2025-06-15T15:29:04.870483509+02:00","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/home/vcivale/prova/Esercitazione_1/wandb/run-20250615_152903-67jlj0ou/logs/debug-core.log"}
+{"time":"2025-06-15T15:29:05.258187105+02:00","level":"INFO","msg":"stream: created new stream","id":"67jlj0ou"}
+{"time":"2025-06-15T15:29:05.258282875+02:00","level":"INFO","msg":"stream: started","id":"67jlj0ou"}
+{"time":"2025-06-15T15:29:05.258420657+02:00","level":"INFO","msg":"sender: started","stream_id":"67jlj0ou"}
+{"time":"2025-06-15T15:29:05.258512567+02:00","level":"INFO","msg":"handler: started","stream_id":"67jlj0ou"}
+{"time":"2025-06-15T15:29:05.258609839+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"67jlj0ou"}
+{"time":"2025-06-15T15:29:05.595825579+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-15T15:38:19.175282939+02:00","level":"INFO","msg":"Stopping system monitor"}
+{"time":"2025-06-15T15:38:19.175379695+02:00","level":"INFO","msg":"Stopped system monitor"}
+{"time":"2025-06-15T15:38:19.813602319+02:00","level":"INFO","msg":"fileTransfer: Close: file transfer manager closed"}
+{"time":"2025-06-15T15:38:20.178073068+02:00","level":"INFO","msg":"handler: operation stats","stats":{"operations":[{"desc":"uploading history steps 106-108, summary, console lines 142-152","runtime_seconds":0.363773599}],"total_operations":1}}
+{"time":"2025-06-15T15:38:20.240057801+02:00","level":"INFO","msg":"stream: closing","id":"67jlj0ou"}
+{"time":"2025-06-15T15:38:20.240088875+02:00","level":"INFO","msg":"handler: closed","stream_id":"67jlj0ou"}
+{"time":"2025-06-15T15:38:20.240105926+02:00","level":"INFO","msg":"writer: Close: closed","stream_id":"67jlj0ou"}
+{"time":"2025-06-15T15:38:20.240118517+02:00","level":"INFO","msg":"sender: closed","stream_id":"67jlj0ou"}
+{"time":"2025-06-15T15:38:20.240205994+02:00","level":"INFO","msg":"stream: closed","id":"67jlj0ou"}
