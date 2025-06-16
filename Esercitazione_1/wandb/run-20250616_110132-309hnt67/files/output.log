@@ -3,4 +3,7 @@ Device: cuda
 Batch size: 128
 
 Epoch 1/20
-                                                              
+[34m[1mwandb[0m: [32m[41mERROR[0m The nbformat package was not found. It is required to save notebook history.
+Training student model with knowledge distillation...
+Training set size: 45000
+Validation set size: 5000
