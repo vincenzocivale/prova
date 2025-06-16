@@ -1,6 +1,3 @@
-Ecco la versione completa del README con tutte e tre le sezioni integrate, mantenendo la tua parte 3 praticamente intatta e uniformando leggermente la forma generale per coerenza e scorrevolezza:
-
----
 
 ### **Exercise 1 – Sentiment Analysis with BERT**
 
