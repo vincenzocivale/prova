@@ -97,7 +97,6 @@ The following table reports the main evaluation metrics (MSE, MAE, Pearson corre
 
 | Layer                | MSE Mean    | MAE Mean   |
 | -------------------- | ----------- | ---------- |
-| Mean Baseline        | **0.1507**  | **0.2592** |
 | Transformer Layer 0  | 42.8374     | 6.4056     |
 | Transformer Layer 1  | **30.2377** | **5.3947** |
 | Transformer Layer 2  | 30.8693     | 5.4469     |
