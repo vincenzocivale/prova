@@ -13,7 +13,7 @@ To address the CartPole environment, a reimplementation of the REINFORCE algorit
 The adopted neural network is a simple feed-forward architecture with two hidden layers of 128 neurons each and ReLU activations. The inputs (position, velocity, pole angle, and angular velocity) are mapped to two logits corresponding to the available actions.
 Action selection is performed using a categorical distribution derived from the softmax of the logits, from which actions are sampled stochastically. This approach ensures a good balance between exploration and exploitation and aligns more closely with the probabilistic nature of the REINFORCE algorithm compared to deterministic selection.
 
-![Cartpole Agent](/Esercitazione_2/record/Cart_Pole.mp4)
+![REINFORCE Baseline](images/cartpole_baseline.png)
 
 The graph shows the trend in the reward obtained per episode during training, together with the moving average over 100 episodes. After an initial phase of gradual learning, the agent achieves high performance around episode 120, with rewards stabilising close to the maximum (500).
 
@@ -21,7 +21,7 @@ However, two significant phases of instability are observed, around episodes 200
 
 
 <video width="600" controls>
-  <source src="https://raw.githubusercontent.com/vincenzocivale/DLA_Laboratorires/main/Esercitazione_2/record/Cart_Pole.mp4" type="video/mp4">
+  <source src="https://raw.githack.com/vincenzocivale/DLA_Laboratorires/main/Esercitazione_2/record/Cart_Pole.mp4" type="video/mp4">
 </video>
 
 
