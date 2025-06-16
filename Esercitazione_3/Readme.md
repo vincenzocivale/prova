@@ -1,6 +1,8 @@
-Ecco la versione completa del README con tutte e tre le sezioni integrate, mantenendo la tua parte 3 praticamente intatta e uniformando leggermente la forma generale per coerenza e scorrevolezza:
+## Table of Contents
 
----
+1. [Exercise 1 – Sentiment Analysis with BERT](#exercise-1--sentiment-analysis-with-bert)
+2. [Exercise 2 – Fine-tuning DistilBERT](#exercise-2--fine-tuning-distilbert)
+3. [Exercise 3 – Zero-Shot Evaluation of Single-Cell Foundation Models](#exercise-3--zero-shot-evaluation-of-single-cell-foundation-models)
 
 ### **Exercise 1 – Sentiment Analysis with BERT**
 
