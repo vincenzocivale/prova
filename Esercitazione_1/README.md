@@ -41,8 +41,9 @@ config = TrainingConfig(
 )
 ```
 
- ![Telegram Notification Bot Demo](images/python_notifier.jpg)
-
+<p align="center">
+    <img src="images/python_notifier.jpg" alt="Telegram Notification Bot Demo" height="30%"/>
+</p>
 The system automatically handles error cases gracefully - if Telegram is unavailable or misconfigured, training proceeds normally without notifications.
 
 
