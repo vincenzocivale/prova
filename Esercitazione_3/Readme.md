@@ -77,6 +77,12 @@ Training is end-to-end, updating both the transformer and the head. This approac
 
 The complete fine-tuning implementation is available in [`Lab3_Transformers.ipynb`](Lab3_Transformers.ipynb) with detailed training logs and evaluation metrics.
 
+| Training Loss | Validation Loss |
+|:-----------------:|:---------------------:|
+| ![ Training Loss ](images/distillation_train.png) | ![Validation Loss](images/distillation_val.png) |
+
+It can be observed that after the first training epochs, despite the low loss value, the model begins to overfit, perhaps due to excessive complexity for the task being fine-tuned.
+
 ---
 
 ### **Exercise 3 – Zero-Shot Evaluation of Single-Cell Foundation Models**
