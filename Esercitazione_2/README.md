@@ -1,16 +1,49 @@
 # Deep Reinforcement Learning Laboratory
 
-## Index
+## Overview
+
+This repository contains implementations and experiments for Deep Reinforcement Learning algorithms, focusing on policy gradient methods. The project explores REINFORCE algorithm variants and their application to different environments, from discrete control tasks to continuous visual control.
+
+### Project Structure
+
+```
+Esercitazione_2/
+├── src/                           # Source code modules
+│   ├── cartpole/                 # CartPole environment implementations
+│   │   ├── models.py            # Policy and Value network architectures
+│   │   ├── trainers.py          # REINFORCE training algorithms
+│   │   ├── config.py            # Training configurations
+│   │   └── utils.py             # Utility functions
+│   ├── CarRacing/               # Car Racing environment implementations
+│   │   ├── net.py               # CNN architectures for visual input
+│   │   ├── agent.py             # PPO agent implementation
+│   │   ├── environment.py       # Environment wrapper
+│   │   ├── hybrid_preprocessor.py # Geometric feature extraction
+│   │   └── train.py             # Training pipeline
+│   └── common/                  # Shared utilities
+├── model/                       # Saved model checkpoints
+├── record/                      # Training videos
+├── images/                      # Training plots and results
+├── Cartpole.ipynb             # CartPole experiments notebook
+├── DLA_Lab2_DRL.ipynb         # Main experiments notebook
+└── README.md                   # This documentation
+```
+
+
+## Exercises Overview
+
+### Table of Contents
 
 - [Exercise 1: REINFORCE Vanilla on CartPole](#exercise-1-reinforce-vanilla-on-cartpole)
 - [Exercise 2: REINFORCE with Baseline CartPole](#exercise-2-reinforce-with-baseline-cartpole)
 - [Exercise 3: Car Racing OpenAI](#exercise-3-car-racing-openai)
 
-### **Exercise 1: REINFORCE Vanilla CartPole**
+### **Exercise 1: REINFORCE Vanilla on CartPole**
 
 To address the CartPole environment, a reimplementation of the REINFORCE algorithm was carried out. REINFORCE is an on-policy method that updates the policy directly based on observed trajectories, without relying on value function estimation. This makes it particularly suitable for introducing the fundamental principles of stochastic policy optimization.
 
-The adopted neural network is a simple feed-forward architecture with two hidden layers of 128 neurons each and ReLU activations. The inputs (position, velocity, pole angle, and angular velocity) are mapped to two logits corresponding to the available actions.
+The adopted neural network is implemented in [`src/cartpole/models.py`](src/cartpole/models.py) as the [`Policy`](src/cartpole/models.py) class - a simple feed-forward architecture with two hidden layers of 128 neurons each and ReLU activations. The inputs (position, velocity, pole angle, and angular velocity) are mapped to two logits corresponding to the available actions.
+
 Action selection is performed using a categorical distribution derived from the softmax of the logits, from which actions are sampled stochastically. This approach ensures a good balance between exploration and exploitation and aligns more closely with the probabilistic nature of the REINFORCE algorithm compared to deterministic selection.
 
 ![REINFORCE Baseline](images/cartpole_baseline.png)
@@ -31,47 +64,50 @@ After implementing the vanilla REINFORCE algorithm, one of its main limitations 
 
 Instead of judging actions solely based on the total reward obtained, the agent now considers how much better (or worse) a particular outcome is compared to what was expected from that state. This shift from absolute to contextual evaluation leads to more robust learning.
 
-The implementation relies on two distinct neural networks:
+The implementation relies on two distinct neural networks defined in [`src/cartpole/models.py`](src/cartpole/models.py):
+
+- **[`Policy`](src/cartpole/models.py)**: A feed-forward network with two hidden layers (128 units each), outputting logits over the two possible actions.
+- **[`ValueNetwork`](src/cartpole/models.py)**: A similarly structured network that outputs a single scalar value representing the estimated value of the state.
 
 - **Policy Network**: A feed-forward network with two hidden layers (128 units each), outputting logits over the two possible actions.
 - **Value Network**: A similarly structured network that outputs a single scalar value representing the estimated value of the state.
 
 ```python
-class PolicyNet(nn.Module):
-    def __init__(self, n_states=4, n_actions=2, n_hidden=128):
-        super(PolicyNet, self).__init__()
-        self.fc1 = nn.Linear(n_states, n_hidden)
-        self.fc2 = nn.Linear(n_hidden, n_hidden)
-        self.action_head = nn.Linear(n_hidden, n_actions)
+# Network architectures from src/cartpole/models.py
+
+class Policy(nn.Module):
+    def __init__(self, s_size, a_size, h_size):
+        super(Policy, self).__init__()
+        self.fc1 = nn.Linear(s_size, h_size)
+        self.fc2 = nn.Linear(h_size, a_size)
 
     def forward(self, x):
         x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        return self.action_head(x)
+        x = self.fc2(x)
+        return F.softmax(x, dim=1)
 
-class ValueNet(nn.Module):
-    def __init__(self, n_states=4, n_hidden=128):
-        super(ValueNet, self).__init__()
-        self.fc1 = nn.Linear(n_states, n_hidden)
-        self.fc2 = nn.Linear(n_hidden, n_hidden)
-        self.value_head = nn.Linear(n_hidden, 1)
-
-    def forward(self, x):
-        x = F.relu(self.fc1(x))
-        x = F.relu(self.fc2(x))
-        return self.value_head(x)
+class ValueNetwork(nn.Module):
+    def __init__(self, state_size, hidden_size=128):
+        super().__init__()
+        self.net = nn.Sequential(
+            nn.Linear(state_size, hidden_size),
+            nn.ReLU(),
+            nn.Linear(hidden_size, 1)
+        )
 ```
 
-Separate networks were preferred over a shared architecture with two heads, to reduce interference between action selection and state evaluation,  two distinct cognitive tasks that benefit from independent representations.
-Learning Mechanism: Advantage Estimation
+Separate networks were preferred over a shared architecture with two heads, to reduce interference between action selection and state evaluation, two distinct cognitive tasks that benefit from independent representations.
+
+#### Learning Mechanism: Advantage Estimation
 
 The policy update is based on the advantage function, computed as:
 
-A(st,at)=Gt−V(st)
+**A(s_t, a_t) = G_t - V(s_t)**
 
-
-Where Gt​ is the total return from time step t, and V(st​) is the value estimated by the value network.
+Where G_t is the total return from time step t, and V(s_t) is the value estimated by the value network.
 Using this advantage rather than raw returns leads to lower variance and faster convergence.
+
+The complete baseline implementation is available in [`src/cartpole/trainers.py`](src/cartpole/trainers.py) with the enhanced REINFORCE algorithm.
 
 
 | Vanilla REINFORCE | REINFORCE con Baseline |
@@ -94,9 +130,19 @@ After achieving good results with REINFORCE on CartPole, the transition to CarRa
 
 The agent was trained on a discretised action space consisting of five macro-actions (no action, left/right turn, acceleration, braking). This choice, inspired by suggestions from [notanymike](https://notanymike.github.io/Solving-CarRacing/), stabilised training, avoiding the noisy updates and divergence observed with continuous actions.
 
-The architecture used is a convolutional neural network with three layers (16 to 64 filters, decreasing kernels), followed by two separate output heads for policy and value estimation, sharing a backbone to extract common visual features.
+#### Architecture and Implementation
 
-To improve spatial reasoning, a geometric preprocessing module was added that extracts features such as curvature, proximity to edges, and optimal driving direction, providing structured signals that facilitate learning. Furthermore, to handle temporal dependence, the state includes the last four actions performed (action stacking), introducing a temporal memory that improves control continuity.
+The architecture is implemented in [`src/CarRacing/net.py`](src/CarRacing/net.py) as a convolutional neural network with three layers (16 to 64 filters, decreasing kernels), followed by two separate output heads for policy and value estimation, sharing a backbone to extract common visual features.
+
+Key components of the CarRacing implementation:
+
+- **[`CarRacingNet`](src/CarRacing/net.py)**: CNN architecture for visual processing
+- **[`PPOAgent`](src/CarRacing/agent.py)**: PPO agent with clipped objective function
+- **[`HybridPreprocessor`](src/CarRacing/hybrid_preprocessor.py)**: Geometric feature extraction module
+- **[`CarRacingEnvironment`](src/CarRacing/environment.py)**: Environment wrapper with discretized actions
+- **[`train_ppo`](src/CarRacing/train.py)**: Complete training pipeline
+
+To improve spatial reasoning, a geometric preprocessing module ([`HybridPreprocessor`](src/CarRacing/hybrid_preprocessor.py)) was added that extracts features such as curvature, proximity to edges, and optimal driving direction, providing structured signals that facilitate learning. Furthermore, to handle temporal dependence, the state includes the last four actions performed (action stacking), introducing a temporal memory that improves control continuity.
 
 Finally, PPO's “clipped” objective function ensured stable and controlled policy updates, preventing catastrophic forgetting and promoting effective convergence despite the high dimensionality of the visual input and the complexity of the task.
 
