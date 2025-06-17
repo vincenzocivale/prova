@@ -136,7 +136,7 @@ Key components of the CarRacing implementation:
 - **[`CarRacingNet`](src/CarRacing/net.py)**: CNN architecture for visual processing
 - **[`PPOAgent`](src/CarRacing/agent.py)**: PPO agent with clipped objective function
 - **[`HybridPreprocessor`](src/CarRacing/hybrid_preprocessor.py)**: Geometric feature extraction module
-- **[`CarRacingEnvironment`](src/CarRacing/environment.py)**: Environment wrapper with discretized actions
+- **[`CarRacingEnvironment`](src/CarRacing/environment.py)**: Environment wrapper 
 - **[`train_ppo`](src/CarRacing/train.py)**: Complete training pipeline
 
 To improve spatial reasoning, a geometric preprocessing module ([`HybridPreprocessor`](src/CarRacing/hybrid_preprocessor.py)) was added that extracts features such as curvature, proximity to edges, and optimal driving direction, providing structured signals that facilitate learning. Furthermore, to handle temporal dependence, the state includes the last four actions performed (action stacking), introducing a temporal memory that improves control continuity.
