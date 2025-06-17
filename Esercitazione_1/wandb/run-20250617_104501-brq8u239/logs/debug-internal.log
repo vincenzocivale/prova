@@ -1,0 +1,9 @@
+{"time":"2025-06-17T10:45:03.762610678+02:00","level":"INFO","msg":"stream: starting","core version":"0.20.1","symlink path":"/home/vcivale/DLA_Laboratorires/Esercitazione_1/wandb/run-20250617_104501-brq8u239/logs/debug-core.log"}
+{"time":"2025-06-17T10:45:04.338524954+02:00","level":"INFO","msg":"stream: created new stream","id":"brq8u239"}
+{"time":"2025-06-17T10:45:04.338563655+02:00","level":"INFO","msg":"stream: started","id":"brq8u239"}
+{"time":"2025-06-17T10:45:04.338581499+02:00","level":"INFO","msg":"handler: started","stream_id":"brq8u239"}
+{"time":"2025-06-17T10:45:04.338614418+02:00","level":"INFO","msg":"sender: started","stream_id":"brq8u239"}
+{"time":"2025-06-17T10:45:04.338588894+02:00","level":"INFO","msg":"writer: Do: started","stream_id":"brq8u239"}
+{"time":"2025-06-17T10:45:04.728971096+02:00","level":"INFO","msg":"Starting system monitor"}
+{"time":"2025-06-17T10:45:08.56876844+02:00","level":"INFO","msg":"Pausing system monitor"}
+{"time":"2025-06-17T10:53:59.396926904+02:00","level":"INFO","msg":"Resuming system monitor"}

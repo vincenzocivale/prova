@@ -1,0 +1,176 @@
+Model: mlp_in784_h128_64_out10_relu_drop01
+Total parameters: 109,386
+Starting training for 60 epochs
+Device: cuda
+Batch size: 256
+
+Epoch 1/60
+                                                                        
+Train Loss: 1.0107, Val Metrics: {'loss': 0.29491752696533996, 'accuracy': 0.9233333333333333}
+✓ Best model updated!
+
+Epoch 2/60
+Train Loss: 0.4691, Val Metrics: {'loss': 0.18627112017323574, 'accuracy': 0.9455}
+✓ Best model updated!
+
+Epoch 3/60
+Train Loss: 0.3552, Val Metrics: {'loss': 0.14396164938807487, 'accuracy': 0.9573333333333334}
+✓ Best model updated!
+
+Epoch 4/60
+Train Loss: 0.3062, Val Metrics: {'loss': 0.12380313904335101, 'accuracy': 0.9671666666666666}
+✓ Best model updated!
+
+Epoch 5/60
+Train Loss: 0.2787, Val Metrics: {'loss': 0.11541973085453112, 'accuracy': 0.9645}
+No improvement for 1 epochs
+
+Epoch 6/60
+Train Loss: 0.2577, Val Metrics: {'loss': 0.11027239526932438, 'accuracy': 0.966}
+No improvement for 2 epochs
+
+Epoch 7/60
+Train Loss: 0.2449, Val Metrics: {'loss': 0.09752736240625381, 'accuracy': 0.9711666666666666}
+✓ Best model updated!
+
+Epoch 8/60
+Train Loss: 0.2372, Val Metrics: {'loss': 0.09824426006525755, 'accuracy': 0.9686666666666667}
+No improvement for 1 epochs
+
+Epoch 9/60
+Train Loss: 0.2211, Val Metrics: {'loss': 0.0906527095163862, 'accuracy': 0.9738333333333333}
+✓ Best model updated!
+
+Epoch 10/60
+Train Loss: 0.2133, Val Metrics: {'loss': 0.08413747030620773, 'accuracy': 0.9733333333333334}
+No improvement for 1 epochs
+
+Epoch 11/60
+Train Loss: 0.2053, Val Metrics: {'loss': 0.08706490835174918, 'accuracy': 0.9728333333333333}
+No improvement for 2 epochs
+
+Epoch 12/60
+Train Loss: 0.2020, Val Metrics: {'loss': 0.0810450785793364, 'accuracy': 0.9745}
+✓ Best model updated!
+
+Epoch 13/60
+Train Loss: 0.2005, Val Metrics: {'loss': 0.0805857270800819, 'accuracy': 0.975}
+✓ Best model updated!
+
+Epoch 14/60
+Train Loss: 0.1931, Val Metrics: {'loss': 0.07547960570082068, 'accuracy': 0.9766666666666667}
+✓ Best model updated!
+
+Epoch 15/60
+Train Loss: 0.1900, Val Metrics: {'loss': 0.07975762935044865, 'accuracy': 0.9728333333333333}
+No improvement for 1 epochs
+
+Epoch 16/60
+Train Loss: 0.1837, Val Metrics: {'loss': 0.07521040830761194, 'accuracy': 0.9765}
+No improvement for 2 epochs
+
+Epoch 17/60
+Train Loss: 0.1813, Val Metrics: {'loss': 0.0733087722522517, 'accuracy': 0.9776666666666667}
+✓ Best model updated!
+
+Epoch 18/60
+Train Loss: 0.1810, Val Metrics: {'loss': 0.07218228722922504, 'accuracy': 0.9778333333333333}
+✓ Best model updated!
+
+Epoch 19/60
+Train Loss: 0.1709, Val Metrics: {'loss': 0.07676797732710838, 'accuracy': 0.9765}
+No improvement for 1 epochs
+
+Epoch 20/60
+Train Loss: 0.1742, Val Metrics: {'loss': 0.06868561737549801, 'accuracy': 0.979}
+✓ Best model updated!
+
+Epoch 21/60
+Train Loss: 0.1711, Val Metrics: {'loss': 0.06667962623760104, 'accuracy': 0.9781666666666666}
+No improvement for 1 epochs
+
+Epoch 22/60
+Train Loss: 0.1681, Val Metrics: {'loss': 0.06554728893873592, 'accuracy': 0.9786666666666667}
+No improvement for 2 epochs
+
+Epoch 23/60
+Train Loss: 0.1648, Val Metrics: {'loss': 0.06259728750834863, 'accuracy': 0.9795}
+✓ Best model updated!
+
+Epoch 24/60
+Train Loss: 0.1633, Val Metrics: {'loss': 0.06610513563888769, 'accuracy': 0.9796666666666667}
+✓ Best model updated!
+
+Epoch 25/60
+Train Loss: 0.1629, Val Metrics: {'loss': 0.06932399980723858, 'accuracy': 0.9781666666666666}
+No improvement for 1 epochs
+
+Epoch 26/60
+Train Loss: 0.1619, Val Metrics: {'loss': 0.067319223152784, 'accuracy': 0.9786666666666667}
+No improvement for 2 epochs
+
+Epoch 27/60
+Train Loss: 0.1606, Val Metrics: {'loss': 0.06551234882014494, 'accuracy': 0.9803333333333333}
+✓ Best model updated!
+
+Epoch 28/60
+Train Loss: 0.1614, Val Metrics: {'loss': 0.0643308824704339, 'accuracy': 0.9788333333333333}
+No improvement for 1 epochs
+
+Epoch 29/60
+Train Loss: 0.1582, Val Metrics: {'loss': 0.06245964082578818, 'accuracy': 0.9796666666666667}
+No improvement for 2 epochs
+
+Epoch 30/60
+Train Loss: 0.1604, Val Metrics: {'loss': 0.06017087562941015, 'accuracy': 0.9815}
+✓ Best model updated!
+
+Epoch 31/60
+Train Loss: 0.1539, Val Metrics: {'loss': 0.06391862023156136, 'accuracy': 0.9795}
+No improvement for 1 epochs
+
+Epoch 32/60
+Train Loss: 0.1545, Val Metrics: {'loss': 0.058556686039082706, 'accuracy': 0.9796666666666667}
+No improvement for 2 epochs
+
+Epoch 33/60
+Train Loss: 0.1563, Val Metrics: {'loss': 0.06041233796471109, 'accuracy': 0.9823333333333333}
+✓ Best model updated!
+
+Epoch 34/60
+Train Loss: 0.1480, Val Metrics: {'loss': 0.06124650943093002, 'accuracy': 0.9806666666666667}
+No improvement for 1 epochs
+
+Epoch 35/60
+Train Loss: 0.1522, Val Metrics: {'loss': 0.06075414502993226, 'accuracy': 0.9815}
+No improvement for 2 epochs
+
+Epoch 36/60
+Train Loss: 0.1475, Val Metrics: {'loss': 0.05850630959806343, 'accuracy': 0.9818333333333333}
+No improvement for 3 epochs
+
+Epoch 37/60
+Train Loss: 0.1496, Val Metrics: {'loss': 0.05770529294386506, 'accuracy': 0.9828333333333333}
+✓ Best model updated!
+
+Epoch 38/60
+Train Loss: 0.1438, Val Metrics: {'loss': 0.06489142550465961, 'accuracy': 0.9796666666666667}
+No improvement for 1 epochs
+
+Epoch 39/60
+Train Loss: 0.1488, Val Metrics: {'loss': 0.060747797678535186, 'accuracy': 0.9805}
+No improvement for 2 epochs
+
+Epoch 40/60
+Train Loss: 0.1444, Val Metrics: {'loss': 0.06012222426943481, 'accuracy': 0.9811666666666666}
+No improvement for 3 epochs
+
+Epoch 41/60
+Train Loss: 0.1473, Val Metrics: {'loss': 0.05608866433613002, 'accuracy': 0.9831666666666666}
+✓ Best model updated!
+
+Epoch 42/60
+Train Loss: 0.1456, Val Metrics: {'loss': 0.057129312229032315, 'accuracy': 0.9825}
+No improvement for 1 epochs
+
+Epoch 43/60

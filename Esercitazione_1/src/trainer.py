@@ -2,6 +2,7 @@ import torch
 import numpy as np
 import os
 import copy
+import time
 from torch.utils.data import DataLoader, Dataset
 from torch.optim import Adam, SGD
 from sklearn.model_selection import train_test_split
@@ -9,6 +10,7 @@ import wandb
 from typing import Optional, Callable, Any, Dict
 from .data import get_data_transforms, TransformedSubset
 from sklearn.metrics import accuracy_score
+from .telegram_notifier import TelegramNotifier, create_telegram_notifier_from_env
 
 class StreamlinedTrainer:
     def __init__(self, model, config, train_dataset, test_dataset, compute_metrics_fn: Optional[Callable] = None):
@@ -24,6 +26,23 @@ class StreamlinedTrainer:
         self.best_metric = None
         self.best_model_state = None
         self.epochs_without_improvement = 0
+        
+        # Initialize Telegram notifier
+        self.telegram_notifier = None
+        if config.use_telegram_notifications:
+            if config.telegram_bot_token and config.telegram_chat_id:
+                self.telegram_notifier = TelegramNotifier(
+                    bot_token=config.telegram_bot_token,
+                    chat_id=config.telegram_chat_id,
+                    enabled=True
+                )
+            else:
+                # Try to create notifier from environment variables
+                self.telegram_notifier = create_telegram_notifier_from_env()
+        
+        # Timer for training duration
+        self.training_start_time = None
+        
         if config.use_wandb:
             wandb.init(
                 project=config.wandb_project,
@@ -156,6 +175,10 @@ class StreamlinedTrainer:
         print(f"Starting training for {self.config.num_epochs} epochs")
         print(f"Device: {self.config.device}")
         print(f"Batch size: {self.config.batch_size}")
+        
+        # Start training timer
+        self.training_start_time = time.time()
+        
         for epoch in range(self.config.num_epochs):
             print(f"\nEpoch {epoch + 1}/{self.config.num_epochs}")
             train_loss = self.train_epoch()
@@ -180,6 +203,13 @@ class StreamlinedTrainer:
             self.model.load_state_dict(self.best_model_state)
         test_metrics = self.evaluate(self.test_loader, "test")
         print(f"\nFinal Test Metrics: {test_metrics}")
+        
+        # Calculate total training duration
+        training_duration = time.time() - self.training_start_time if self.training_start_time else 0
+        
+        # Send Telegram notification if configured
+        self._send_telegram_notification(test_metrics, training_duration)
+        
         return test_metrics
     def _is_best_metric(self, current_metric: float) -> bool:
         if self.best_metric is None:
@@ -188,6 +218,40 @@ class StreamlinedTrainer:
             return current_metric > self.best_metric
         else:
             return current_metric < self.best_metric
+    
+    def _send_telegram_notification(self, test_metrics: Dict[str, float], training_duration: float) -> None:
+        """
+        Send a Telegram notification with training results.
+        """
+        if not self.telegram_notifier:
+            return
+            
+        try:
+            # Prepare configuration summary
+            config_summary = {
+                "Epochs": self.config.num_epochs,
+                "Batch Size": self.config.batch_size,
+                "Learning Rate": self.config.learning_rate,
+                "Optimizer": self.config.optimizer_type,
+                "Device": self.config.device,
+                "Early Stopping": self.config.use_early_stopping
+            }
+            
+            # Send notification
+            success = self.telegram_notifier.send_training_completion_sync(
+                model_name=str(self.model),
+                training_duration=training_duration,
+                final_metrics=test_metrics,
+                config_summary=config_summary,
+                additional_info=self.config.telegram_additional_info
+            )
+            
+            if not success:
+                print("⚠️  Unable to send Telegram notification")
+                
+        except Exception as e:
+            print(f"⚠️  Error sending Telegram notification: {e}")
+    
     def save_model(self, suffix: str = "final") -> str:
         os.makedirs(self.config.output_dir, exist_ok=True)
         filename = f"{str(self.model)}_{suffix}.pth"

@@ -26,6 +26,13 @@ class TrainingConfig:
     early_stopping_patience: int = 10
     early_stopping_metric: str = "accuracy"
     maximize_metric: bool = True
+    
+    # Telegram notifications
+    use_telegram_notifications: bool = False
+    telegram_bot_token: Optional[str] = None
+    telegram_chat_id: Optional[str] = None
+    telegram_additional_info: Optional[str] = None
+    
     def __post_init__(self):
         if self.device is None:
             if torch.cuda.is_available():

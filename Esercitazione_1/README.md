@@ -1,13 +1,52 @@
-### Exercis### Exercise 1.2 — Residual MLP: Implementation and ExperimenTo this end, two architecturalThe teacher architecture is represented by a [`ResidualCNN`](src/models.py) network with depth 4, while the student adopts the same structure but with depth 2, significantly reducing the number of parameters while retaining the residual paradigm. The distillation process is performed using a custom [`distillation_loss`](src/models.py) function that combines two terms: the classical cross-entropy on the ground truth labels and the Kullback-Leibler divergence between the student's and teacher's softened predictions, softened via a temperature parameter T. In this case, T was set to 4.0 to make the distributions more informative, and a coefficient α of 0.7 was used to give greater weight to the teacher-derived component. To avoid excessive gradient reduction, the loss was scaled by a factor of T², as suggested in the original distillation formulation.variants were implemented in [`src/models.py`](src/models.py). The first, called [`SimpleCNN`](src/models.py), follows a traditional structure with an initial layer composed of a 3×3 convolution, batch normalization, and ReLU activation, followed by a sequence of convolutional blocks performing progressive downsampling via strides greater than one. At each level, the number of channels is doubled to preserve representational capacity. The final part of the architecture employs global average pooling and a linear layer for classification into the dataset's ten classes.al Verification
+# Deep Learning Applications - Laboratory 1
 
-In this exercise, we empirically verify the principle underlying the famous work *"Deep Residual Learning for Image Recognition"* by He et al. (2016): residual connections allow deeper networks to be trained more effectively, overcoming the limitations associated with performance degradation that are often observed when increasing the depth of a traditional MLP network.
+## Overview
 
-The implementation is based on two main components in [`src/models.py`](src/models.py):
+This laboratory focuses on implementing and comparing various neural network architectures, from simple MLPs to more complex CNNs with residual connections, using PyTorch. The experiments are designed to verify key principles in deep learning, particularly the benefits of residual connections and knowledge distillation techniques.
 
-* **[`ResidualBlock`](src/models.py)**: represents the basic unit, with structure `F(x) + x`, where `F(x)` is the learned transformation and `x` is the input transmitted via skip connection.
-* **[`ResidualMLP`](src/models.py)**: constructed as a sequence of residual blocks, each with linear layers, ReLU activation and dropout. If the dimensions do not match, a linear projection is used to adapt them, making the architecture flexible.
+## Training Pipeline and Infrastructure
 
-The final output passes through a separate classification layer.seline MLP for MNIST
+The laboratory implements a comprehensive training infrastructure built around a modular and extensible architecture. The core components include:
+
+### Core Components
+
+- **[`StreamlinedTrainer`](src/trainer.py)**: A custom training class derived from HuggingFace's Trainer paradigm, handling the complete training loop with automatic dataset stratification, metrics monitoring, and early stopping.
+- **[`TrainingConfig`](src/config.py)**: Centralized configuration management for experiment reproducibility and easy parameter tuning.
+- **[`Models`](src/models.py)**: Implementation of various architectures including MLP, ResidualMLP, SimpleCNN, and ResidualCNN.
+
+### Monitoring and Logging
+
+The pipeline integrates with **Weights & Biases** for comprehensive experiment tracking, providing real-time monitoring of training metrics, model parameters, and system resources. This enables systematic comparison across different architectures and hyperparameters.
+
+### Telegram Notifications
+
+A key feature of the training pipeline is the **optional Telegram notification system**, which provides real-time updates on training completion. This feature is particularly useful for long-running experiments and remote monitoring.
+
+The notification system is designed to be completely optional and non-intrusive:
+
+1. **Bot Creation**: Create a Telegram bot via [@BotFather](https://t.me/BotFather)
+2. **Configuration**: Set environment variables or specify credentials directly in the config
+3. **Activation**: Enable with `use_telegram_notifications=True` in `TrainingConfig`
+
+```python
+config = TrainingConfig(
+    # Standard training parameters
+    num_epochs=60,
+    batch_size=256,
+    learning_rate=1e-3,
+    
+    # Enable Telegram notifications
+    use_telegram_notifications=True,
+    telegram_additional_info="Experiment: ResNet vs SimpleCNN"
+)
+```
+
+The system automatically handles error cases gracefully - if Telegram is unavailable or misconfigured, training proceeds normally without notifications.
+
+
+## Exercises
+
+### Exercise 1.1 — Baseline MLP for MNIST
 
 This exercise aims to implement a simple Multilayer Perceptron (MLP) for classifying digits in the MNIST dataset, creating a solid baseline for subsequent comparisons with more complex models.
 
@@ -16,6 +55,11 @@ The model has two hidden layers of 128 and 64 neurons, with ReLU activations and
 For training, a modular pipeline was used, built on the basis of HuggingFace's `Trainer` class, from which a customised version called [`StreamlinedTrainer`](src/trainer.py) was derived. This automatically manages the stratified division of the dataset (90% training, 10% validation), the application of data augmentation techniques (random rotations, affine transformations), the monitoring of metrics via Weights & Biases, and early stopping with a patience of 10 epochs.
 
 The experimental configuration is centralised in a single [`TrainingConfig`](src/config.py) class, designed to facilitate the modification and reproducibility of experiments. The model was trained for up to 60 epochs with a batch size of 256, optimised with Adam and a learning rate of 1e-3.
+
+| Training Loss | Validation Loss |
+|:-----------------:|:---------------------:|
+| ![ Training Loss ](images/first_mlp_train.png) | ![Validation Loss](images/first_mlp_val.png) |
+
 
 
 ### Exercise 1.2 — Residual MLP: Implementation and Experimental Verification

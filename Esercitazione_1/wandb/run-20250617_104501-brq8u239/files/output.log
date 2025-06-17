@@ -1,0 +1,150 @@
+Model: mlp_in784_h128_64_out10_relu_drop01
+Total parameters: 109,386
+Starting training for 60 epochs
+Device: cuda
+Batch size: 256
+
+Epoch 1/60
+                                                                        
+Train Loss: 0.9811, Val Metrics: {'loss': 0.27193740010261536, 'accuracy': 0.9271666666666667}
+✓ Best model updated!
+
+Epoch 2/60
+Train Loss: 0.4573, Val Metrics: {'loss': 0.18615855804334083, 'accuracy': 0.9481666666666667}
+✓ Best model updated!
+
+Epoch 3/60
+Train Loss: 0.3548, Val Metrics: {'loss': 0.13861784307907024, 'accuracy': 0.961}
+✓ Best model updated!
+
+Epoch 4/60
+Train Loss: 0.3091, Val Metrics: {'loss': 0.12387798617904384, 'accuracy': 0.9648333333333333}
+✓ Best model updated!
+
+Epoch 5/60
+Train Loss: 0.2811, Val Metrics: {'loss': 0.10544467593232791, 'accuracy': 0.968}
+✓ Best model updated!
+
+Epoch 6/60
+Train Loss: 0.2554, Val Metrics: {'loss': 0.09936839404205482, 'accuracy': 0.9726666666666667}
+✓ Best model updated!
+
+Epoch 7/60
+Train Loss: 0.2432, Val Metrics: {'loss': 0.09409296031420429, 'accuracy': 0.9715}
+No improvement for 1 epochs
+
+Epoch 8/60
+Train Loss: 0.2369, Val Metrics: {'loss': 0.09111031408732136, 'accuracy': 0.971}
+No improvement for 2 epochs
+
+Epoch 9/60
+Train Loss: 0.2210, Val Metrics: {'loss': 0.08179351563254993, 'accuracy': 0.9748333333333333}
+✓ Best model updated!
+
+Epoch 10/60
+Train Loss: 0.2117, Val Metrics: {'loss': 0.08083280501887202, 'accuracy': 0.9745}
+No improvement for 1 epochs
+
+Epoch 11/60
+Train Loss: 0.2042, Val Metrics: {'loss': 0.08248593487466375, 'accuracy': 0.9756666666666667}
+✓ Best model updated!
+
+Epoch 12/60
+Train Loss: 0.2031, Val Metrics: {'loss': 0.07925768964923918, 'accuracy': 0.9776666666666667}
+✓ Best model updated!
+
+Epoch 13/60
+Train Loss: 0.1993, Val Metrics: {'loss': 0.07484238982821505, 'accuracy': 0.9771666666666666}
+No improvement for 1 epochs
+
+Epoch 14/60
+Train Loss: 0.1881, Val Metrics: {'loss': 0.07397266756743193, 'accuracy': 0.9783333333333334}
+✓ Best model updated!
+
+Epoch 15/60
+Train Loss: 0.1906, Val Metrics: {'loss': 0.06898481732544799, 'accuracy': 0.9796666666666667}
+✓ Best model updated!
+
+Epoch 16/60
+Train Loss: 0.1853, Val Metrics: {'loss': 0.0704711767223974, 'accuracy': 0.9785}
+No improvement for 1 epochs
+
+Epoch 17/60
+Train Loss: 0.1784, Val Metrics: {'loss': 0.07136929601741333, 'accuracy': 0.9788333333333333}
+No improvement for 2 epochs
+
+Epoch 18/60
+Train Loss: 0.1802, Val Metrics: {'loss': 0.07085328781977296, 'accuracy': 0.9776666666666667}
+No improvement for 3 epochs
+
+Epoch 19/60
+Train Loss: 0.1739, Val Metrics: {'loss': 0.06891742185689509, 'accuracy': 0.9783333333333334}
+No improvement for 4 epochs
+
+Epoch 20/60
+Train Loss: 0.1703, Val Metrics: {'loss': 0.06602734831782679, 'accuracy': 0.981}
+✓ Best model updated!
+
+Epoch 21/60
+Train Loss: 0.1747, Val Metrics: {'loss': 0.0631318901044627, 'accuracy': 0.9803333333333333}
+No improvement for 1 epochs
+
+Epoch 22/60
+Train Loss: 0.1659, Val Metrics: {'loss': 0.06320804039326806, 'accuracy': 0.981}
+No improvement for 2 epochs
+
+Epoch 23/60
+Train Loss: 0.1646, Val Metrics: {'loss': 0.06427907233592123, 'accuracy': 0.9805}
+No improvement for 3 epochs
+
+Epoch 24/60
+Train Loss: 0.1636, Val Metrics: {'loss': 0.060980449973916016, 'accuracy': 0.9836666666666667}
+✓ Best model updated!
+
+Epoch 25/60
+Train Loss: 0.1608, Val Metrics: {'loss': 0.05729575412503133, 'accuracy': 0.982}
+No improvement for 1 epochs
+
+Epoch 26/60
+Train Loss: 0.1590, Val Metrics: {'loss': 0.06433479363719623, 'accuracy': 0.9796666666666667}
+No improvement for 2 epochs
+
+Epoch 27/60
+Train Loss: 0.1595, Val Metrics: {'loss': 0.06610442488454282, 'accuracy': 0.9796666666666667}
+No improvement for 3 epochs
+
+Epoch 28/60
+Train Loss: 0.1596, Val Metrics: {'loss': 0.060072063002735376, 'accuracy': 0.9823333333333333}
+No improvement for 4 epochs
+
+Epoch 29/60
+Train Loss: 0.1558, Val Metrics: {'loss': 0.058751175102467336, 'accuracy': 0.9821666666666666}
+No improvement for 5 epochs
+
+Epoch 30/60
+Train Loss: 0.1584, Val Metrics: {'loss': 0.053525581723079085, 'accuracy': 0.9825}
+No improvement for 6 epochs
+
+Epoch 31/60
+Train Loss: 0.1509, Val Metrics: {'loss': 0.06215108981511245, 'accuracy': 0.9796666666666667}
+No improvement for 7 epochs
+
+Epoch 32/60
+Train Loss: 0.1548, Val Metrics: {'loss': 0.060813654912635684, 'accuracy': 0.9813333333333333}
+No improvement for 8 epochs
+
+Epoch 33/60
+Train Loss: 0.1485, Val Metrics: {'loss': 0.056550342589616776, 'accuracy': 0.9826666666666667}
+No improvement for 9 epochs
+
+Epoch 34/60
+Train Loss: 0.1474, Val Metrics: {'loss': 0.057922923704609275, 'accuracy': 0.98}
+No improvement for 10 epochs
+Early stopping triggered after 34 epochs
+Loading best model weights
+
+Final Test Metrics: {'loss': 0.04879608147602994, 'accuracy': 0.9835}
+❌ Errore nell'invio sincrono della notifica: Cannot run the event loop while another loop is running
+  return False
+RuntimeWarning: Enable tracemalloc to get the object allocation traceback
+⚠️  Impossibile inviare la notifica Telegram
