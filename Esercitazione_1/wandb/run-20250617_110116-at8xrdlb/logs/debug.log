@@ -25,3 +25,4 @@ config: {'num_epochs': 60, 'batch_size': 256, 'learning_rate': 0.001, 'loss_fn':
 2025-06-17 11:01:17,693 INFO    MainThread:2523107 [wandb_init.py:_post_run_cell_hook():592] [no run ID] resuming backend
 2025-06-17 11:01:17,784 INFO    MainThread:2523107 [jupyter.py:save_ipynb():404] [no run ID] not saving jupyter notebook
 2025-06-17 11:01:17,784 INFO    MainThread:2523107 [wandb_init.py:_pre_run_cell_hook():581] [no run ID] pausing backend
+2025-06-17 11:16:49,613 INFO    MainThread:2523107 [wandb_init.py:_post_run_cell_hook():592] [no run ID] resuming backend
