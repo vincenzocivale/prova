@@ -149,7 +149,6 @@ Despite various attempts, the results obtained in CarRacing-v3 were disappointin
 [carracing_test_current.webm](https://github.com/user-attachments/assets/3602e2bd-c9cd-4c07-bb62-f5b944b837ea)
 
 
-
 The main causes may be:
 
 - **Discretised action space**: although it promotes stability, it limits the precision and dynamism of manoeuvres, leading to cautious driving.

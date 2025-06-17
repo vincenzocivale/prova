@@ -1,3 +1,25 @@
+# Deep Learning Applications: Laboratory #3
+
+## Transformers and Foundation Models
+
+This repository contains implementations and experiments for Laboratory #3 of the Deep Learning Applications course. The project explores transformer architectures for Natural Language Processing and Bioinformatics, covering sentiment analysis with BERT/DistilBERT and zero-shot evaluation of single-cell foundation models.
+
+### Project Structure
+
+```
+Esercitazione_3/
+├── src/                           # Source code modules
+│   ├── data/                     # Data handling utilities
+│   │   ├── download_spatial_data.py # HuggingFace dataset download
+│   │   └── create_dataset.py     # Dataset preprocessing
+│   └── model/                    # Model analysis utilities
+│       └── analysis.py           # scGPT layer-wise evaluation
+├── data/                         # Downloaded datasets
+├── results/                      # Experiment results and metrics
+├── Lab3_Transformers.ipynb      # Main experiments notebook
+└── Readme.md                     # This documentation
+```
+
 
 ## Table of Contents
 
@@ -11,11 +33,17 @@ The aim of the exercise was to build a sentiment analysis pipeline using a pre-t
 
 The work began with exploring the dataset using the HuggingFace library. The corpus was already divided into three balanced sets (train, validation and test), each consisting of sentences taken from film reviews, annotated with a binary label indicating sentiment (positive or negative). This organisation facilitated the structuring of the model training, optimisation and evaluation process.
 
+#### Implementation Details
+
 Next, the `distilbert-base-uncased` model was loaded along with the associated tokeniser. DistilBERT was chosen for its computational efficiency: it is a lighter and faster version of BERT, obtained through knowledge distillation, which still maintains good performance. The tokeniser uses WordPiece tokenisation, adding the special tokens `[CLS]` and `[SEP]`, and automatically handles padding and attention masks for batch processing.
 
 For each input sequence, the model returns a three-dimensional vector representation in which the first vector (relative to the token `[CLS]`) summarises the meaning of the entire sentence. This representation was used as a sentence-level embedding for each example in the dataset.
 
-Starting from these embeddings, a linear SVM classifier (`LinearSVC`) was trained, thus defining a reference baseline. Performance was evaluated on the validation and test sets using standard classification metrics. The model achieved an accuracy of 82% on the validation set and 80% on the test set. The F1 scores for the two classes are around 80%, demonstrating good discriminatory power even without fine-tuning the transformer model.
+Starting from these embeddings, a linear SVM classifier (`LinearSVC`) was trained, thus defining a reference baseline. Performance was evaluated on the validation and test sets using standard classification metrics. The complete implementation can be found in [`Lab3_Transformers.ipynb`](Lab3_Transformers.ipynb).
+
+#### Results
+
+The model achieved an accuracy of 82% on the validation set and 80% on the test set. The F1 scores for the two classes are around 80%, demonstrating good discriminatory power even without fine-tuning the transformer model.
 
 | Dataset            | Metric    | Class 0 | Class 1 | Overall |
 | ------------------ | --------- | ------- | ------- | ------- |
@@ -47,6 +75,8 @@ Training is handled by HuggingFace `Trainer`, with early stopping (patience = 3)
 
 Training is end-to-end, updating both the transformer and the head. This approach improves the model's adaptation to the specific task and ensures better performance than simple feature extraction.
 
+The complete fine-tuning implementation is available in [`Lab3_Transformers.ipynb`](Lab3_Transformers.ipynb) with detailed training logs and evaluation metrics.
+
 ---
 
 ### **Exercise 3 – Zero-Shot Evaluation of Single-Cell Foundation Models**
@@ -55,15 +85,11 @@ Training is end-to-end, updating both the transformer and the head. This approac
 
 #### Introduction
 
-
-
 This project was inspired by the study of Kedzierska et al. (2025) at Microsoft Research, titled ["Zero-shot evaluation reveals limitations of single-cell foundation models"](https://genomebiology.biomedcentral.com/articles/10.1186/s13059-025-03574-x?utm_source=bmc_etoc&utm_medium=email&utm_campaign=CONR_13059_AWA1_GL_DTEC_054CI_TOC-250419#Sec3). Their research showed that prominent single-cell foundation models such as **scGPT** and Geneformer often underperform in zero-shot settings, sometimes failing to surpass simple baseline methods. However, their evaluation was limited to embeddings extracted only from the final output layer of these models.
 
 Motivated by this observation, this work investigates whether embeddings extracted from *intermediate layers* of scGPT might provide richer and more predictive information. This hypothesis is supported by findings in the paper ["Perception Encoder: The best visual embeddings are not at the output of the network"](https://arxiv.org/abs/2504.13181), which suggests that, for certain tasks, the most informative representations reside in inner layers rather than the final output.
 
-Motivated by this observation, this work investigates whether embeddings extracted from intermediate layers of scGPT might provide richer and more predictive information. This hypothesis is supported by findings in the paper "Perception Encoder: The best visual embeddings are not at the output of the network", which suggests that, for certain tasks, the most informative representations reside in inner layers rather than the final output.
-
-A personal literature review did not reveal other studies investigating intermediate-layer embeddings of foundation models in single-cell genomics, highlighting the novelty of this analysis
+A personal literature review did not reveal other studies investigating intermediate-layer embeddings of foundation models in single-cell genomics, highlighting the novelty of this analysis.
 
 
 
@@ -72,6 +98,8 @@ A personal literature review did not reveal other studies investigating intermed
 Due to the unavailability of the original datasets used in the reference study ([Assistance Request for Accessing Complete Datasets #3](https://github.com/microsoft/zero-shot-scfoundation/issues/3)), this project uses the publicly available [TCGA digital spatial transcriptomics](https://huggingface.co/datasets/nonchev/TCGA_digitalspatial_transcriptomics) dataset from Hugging Face Datasets. This dataset contains spatial transcriptomics data: gene expression values (RNA levels) for thousands of genes measured at spatially resolved spots in tissue samples, along with their XY coordinates.
 
 The scGPT model, hosted on Hugging Face Hub ([tdc/scGPT](https://huggingface.co/tdc/scGPT)), serves as the foundation model. It was chosen because of its relevance in the field and its role in the reference article.
+
+Data downloading and preprocessing utilities are implemented in [`src/data/download_spatial_data.py`](src/data/download_spatial_data.py) and [`src/data/create_dataset.py`](src/data/create_dataset.py).
 
 #### Methodology
 
@@ -93,7 +121,7 @@ The evaluation confirms the original article’s conclusion that all transformer
 However, a critical new finding is that **intermediate layers can outperform the final layer**: for example, the second Transformer block’s embedding yields an MSE of 30.2 compared to 381.0 for the last layer, indicating richer predictive information early in the network. This underscores the importance of multi-layer analysis to understand model behavior and representation quality.
 
 
-The following table reports the main evaluation metrics (MSE, MAE, Pearson correlation) for each Transformer layer output compared to a simple mean baseline. Full results, including standard deviations, are available in `results/scgpt_layerwise_evaluation.csv`.
+The following table reports the main evaluation metrics (MSE, MAE, Pearson correlation) for each Transformer layer output compared to a simple mean baseline. Full results, including standard deviations, are available in [`results/scgpt_layerwise_evaluation.csv`](results/scgpt_layerwise_evaluation.csv).
 
 | Layer                | MSE Mean    | MAE Mean   |
 | -------------------- | ----------- | ---------- |
