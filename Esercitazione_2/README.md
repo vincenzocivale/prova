@@ -143,22 +143,19 @@ To improve spatial reasoning, a geometric preprocessing module ([`HybridPreproce
 
 Finally, PPO's “clipped” objective function ensured stable and controlled policy updates, preventing catastrophic forgetting and promoting effective convergence despite the high dimensionality of the visual input and the complexity of the task.
 
+![car_racing_episode_reward](https://github.com/user-attachments/assets/4b8a548e-9241-4990-a229-b3e6a3f4394d)
 
 Despite various attempts, the results obtained in CarRacing-v3 were disappointing overall. As shown in the video, the agent proceeds very slowly while remaining on the road, highlighting a conservative policy that limits the reward.
 
 [carracing_test_current.webm](https://github.com/user-attachments/assets/3602e2bd-c9cd-4c07-bb62-f5b944b837ea)
 
 
-The main causes may be:
+In my opinion, the main reason why the system does not work well on CarRacing-v3 is related to the complexity of the environment compared to that encountered in previous exercises such as CartPole. In CartPole, the agent works with a simple vector state, whereas here it has to interpret 96×96 RGB images, so the input space is much larger and more difficult to manage. The convolutional network I used has a fairly simple structure, and is probably not sufficient to extract meaningful visual features to drive effectively.
 
-- **Discretised action space**: although it promotes stability, it limits the precision and dynamism of manoeuvres, leading to cautious driving.
+Furthermore, the decision to discretise the action space into five macro-actions to simplify learning had a side effect: the agent is unable to modulate acceleration or steering well, and ends up adopting a very cautious policy, staying on the track but going very slowly, thus earning low rewards.
 
-- **Difficulty in extracting relevant features**: geometric preprocessing may not be sufficient to ensure adequate visual representations for optimal decisions.
+Another possible cause of the system's failure is related to the choice of reward function, in particular the penalty assigned when the car goes off the track. I set a rather severe penalty to discourage bad behaviour, but I realise that this punishment may be too high compared to the reward obtained simply for proceeding correctly along the route.
 
-- **Limited temporal abstraction**: using the last four actions as temporal memory may not be sufficient to capture complex and long-term dynamics.
-
-- **Exploration-exploitation balance**: the combination of architecture and PPO may have generated an overly cautious policy, reducing the exploration of more effective strategies.
-
-- **Need for further refinement**: training parameters such as learning rate, batch size, and update frequency may require finer tuning.
+The result is that the agent tends to avoid any risk, even at the cost of slowing down excessively or not making the most of the track, thus developing a very conservative policy. In practice, the system prefers “not to make mistakes” rather than “doing well”, and this leads to inefficient behaviour that penalises the overall reward.
 
 
