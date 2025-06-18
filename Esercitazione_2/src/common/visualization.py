@@ -1,5 +1,5 @@
 """
-Modulo per visualizzazione di video e display
+Module for video visualization and display
 """
 import os
 from IPython.display import Video, display
@@ -7,38 +7,38 @@ from IPython.display import Video, display
 
 def display_video(filename):
     """
-    Mostra il video nel notebook
+    Shows video in notebook
     
     Args:
-        filename: Percorso al file video
+        filename: Path to video file
     """
     if os.path.exists(filename):
         try:
             display(Video(filename, width=800, height=600))
-            print(f"📹 Video visualizzato: {filename}")
+            print(f"📹 Video displayed: {filename}")
         except Exception as e:
-            print(f"Errore nella visualizzazione di {filename}: {e}")
+            print(f"Error displaying {filename}: {e}")
     else:
-        print(f"❌ File non trovato: {filename}")
+        print(f"❌ File not found: {filename}")
 
 
 def find_and_display_video(possible_paths):
     """
-    Cerca e visualizza il primo video trovato tra una lista di percorsi
+    Searches for and displays the first video found among a list of paths
     
     Args:
-        possible_paths: Lista di percorsi possibili per il video
+        possible_paths: List of possible paths for video
     
     Returns:
-        True se un video è stato trovato e visualizzato, False altrimenti
+        True if a video was found and displayed, False otherwise
     """
     for video_path in possible_paths:
         if os.path.exists(video_path):
-            print(f"📹 Video trovato: {video_path}")
+            print(f"📹 Video found: {video_path}")
             display_video(video_path)
             return True
     
-    print("❌ Nessun video trovato tra i percorsi:")
+    print("❌ No video found among paths:")
     for path in possible_paths:
         print(f"  - {path}")
     return False
@@ -46,7 +46,7 @@ def find_and_display_video(possible_paths):
 
 def display_carracing_video():
     """
-    Cerca e visualizza il video CarRacing nei percorsi standard
+    Searches for and displays CarRacing video in standard paths
     """
     video_files = [
         "record/carracing_agent_test.mp4",
@@ -55,18 +55,18 @@ def display_carracing_video():
         "record/carracing_simple.mp4"
     ]
     
-    print("🎬 Ricerca video dell'agente CarRacing addestrato:")
+    print("🎬 Searching for trained CarRacing agent video:")
     return find_and_display_video(video_files)
 
 
 def display_cartpole_video():
     """
-    Cerca e visualizza il video CartPole
+    Searches for and displays CartPole video
     """
     video_files = [
         "record/Cart_Pole.mp4",
         "Cart_Pole.mp4"
     ]
     
-    print("🎬 Ricerca video dell'agente CartPole:")
+    print("🎬 Searching for CartPole agent video:")
     return find_and_display_video(video_files)

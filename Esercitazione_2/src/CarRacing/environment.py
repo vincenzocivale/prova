@@ -17,14 +17,14 @@ class Env():
         self.rewards = []
         self.rewardThresh = self.env.spec.reward_threshold
 
-        # Buffer per distanze e azioni
+        # Buffer for distances and actions
         self.laser_history = []
         self.action_history = []
 
-        # Step globale per jerk penalty
+        # Global step for jerk penalty
         self.global_step = 0
 
-        # Controllo rendering
+        # Rendering control
         self.render_enabled = False
 
     def reset(self):
@@ -58,14 +58,14 @@ class Env():
 
             done = terminated or truncated
 
-            # Penalità leggera per zone verdi
+            # Light penalty for green zones
             if self.checkGreen(rgbState):
                 green_counter += 1
                 reward -= 0.03
             else:
                 green_counter = 0
 
-            # Penalità sul jerk 
+            # Jerk penalty 
             jerkPenalty = 0.15 * abs(action - last_action) if self.global_step > 1000 else 0
 
             progress_bonus = 0.1 if self.configs.actionTransformation(action)[0] > 0 else 0.0
@@ -73,7 +73,7 @@ class Env():
             reward -= jerkPenalty
             reward += progress_bonus
 
-            # Accumula reward (non moltiplichiamo arbitrariamente)
+            # Accumulate reward (don't multiply arbitrarily)
             finalReward += reward
 
             self.storeRewards(reward)
@@ -96,7 +96,7 @@ class Env():
                 finalReward -= 2  
                 break
 
-        # Media finale del reward (opzionale ma consigliata)
+        # Final reward average (optional but recommended)
         finalReward /= self.configs.action_repeat
 
         distances, _ = self.preprocess(rgbState)
@@ -136,7 +136,7 @@ class Env():
         self.env.render(*args)
 
     def checkPixelGreen(self, pixel):
-        return pixel < 10  # Soglia più robusta
+        return pixel < 10  # More robust threshold
 
     def preprocess(self, rgb):
         gray = cv2.cvtColor(rgb, cv2.COLOR_BGR2GRAY)

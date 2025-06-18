@@ -8,13 +8,13 @@ from IPython.display import Video, display
 
 def evaluate_agent(env, max_steps, n_eval_episodes, policy):
     """
-    Valuta l'agente per `n_eval_episodes` episodi e restituisce media e deviazione standard dei reward.
+    Evaluates the agent for `n_eval_episodes` episodes and returns mean and standard deviation of rewards.
 
-    :param env: Environment di valutazione (gym.Env)
-    :param max_steps: Numero massimo di step per episodio
-    :param n_eval_episodes: Numero di episodi per la valutazione
-    :param policy: Policy REINFORCE con metodo `act(state)`
-    :return: Tupla di (mean_reward, std_reward)
+    :param env: Evaluation environment (gym.Env)
+    :param max_steps: Maximum number of steps per episode
+    :param n_eval_episodes: Number of episodes for evaluation
+    :param policy: REINFORCE policy with `act(state)` method
+    :return: Tuple of (mean_reward, std_reward)
     """
     episode_rewards = []
 
@@ -42,12 +42,12 @@ def evaluate_agent(env, max_steps, n_eval_episodes, policy):
 
 def record_video(env, policy, out_path, fps=30):
     """
-    Registra un video dell'agente che agisce nell'environment.
+    Records a video of the agent acting in the environment.
     
-    :param env: environment con render_mode='rgb_array'
-    :param policy: agente, deve implementare policy.act(state)
-    :param out_path: percorso completo per output .mp4 o .gif
-    :param fps: frames per secondo
+    :param env: environment with render_mode='rgb_array'
+    :param policy: agent, must implement policy.act(state)
+    :param out_path: complete path for output .mp4 or .gif
+    :param fps: frames per second
     """
     images = []
     state, _ = env.reset()

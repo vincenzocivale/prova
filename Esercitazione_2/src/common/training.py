@@ -1,5 +1,5 @@
 """
-Modulo training per funzioni di training condivise
+Training module for shared training functions
 """
 import numpy as np
 import torch
@@ -8,42 +8,42 @@ from collections import deque
 
 def carracing_reinforce_training(agent, env, configs, run_manager, num_episodes=100, print_every=10):
     """
-    Funzione di training stile REINFORCE per CarRacing
-    Simile alla struttura del training CartPole ma adattata per CarRacing PPO
+    REINFORCE-style training function for CarRacing
+    Similar to CartPole training structure but adapted for CarRacing PPO
     
     Args:
-        agent: L'agente CarRacing da allenare
-        env: L'environment CarRacing
-        configs: Configurazioni dell'esperimento
-        run_manager: Manager per logging e salvataggio
-        num_episodes: Numero di episodi di training
-        print_every: Frequenza di print dei risultati
+        agent: The CarRacing agent to train
+        env: The CarRacing environment
+        configs: Experiment configurations
+        run_manager: Manager for logging and saving
+        num_episodes: Number of training episodes
+        print_every: Frequency of result printing
     
     Returns:
-        Lista dei punteggi per episodio
+        List of scores per episode
     """
     scores = []
     scores_deque = deque(maxlen=100)
     best_score = -float('inf')
     
-    print(f"🚗 Inizio training per {num_episodes} episodi...")
+    print(f"🚗 Starting training for {num_episodes} episodes...")
     
     for episode in range(configs.checkpoint, configs.checkpoint + num_episodes):
         episode_score = 0
         state = env.reset()
-        action_history = [np.zeros(3), np.zeros(3)]  # Storia azioni per environment
+        action_history = [np.zeros(3), np.zeros(3)]  # Action history for environment
         
-        # Esegui un episodio completo
+        # Execute a complete episode
         for t in range(configs.max_episode_steps):
-            # Seleziona azione tramite policy
+            # Select action through policy
             action, log_prob = agent.select_action(state)
             
-            # Esegui step nell'environment
+            # Execute step in environment
             next_state, reward, done, death_reason = env.step(
                 action, action_history[-1], action_history[-2]
             )
             
-            # Aggiorna il buffer dell'agente (simile a REINFORCE ma con PPO buffer)
+            # Update agent buffer (similar to REINFORCE but with PPO buffer)
             if not configs.test:
                 loss, entropy = agent.update((state, action, log_prob, reward, next_state), episode)
             
@@ -54,7 +54,7 @@ def carracing_reinforce_training(agent, env, configs, run_manager, num_episodes=
             if done:
                 break
         
-        # Tracking dei risultati
+        # Results tracking
         scores.append(episode_score)
         scores_deque.append(episode_score)
         avg_score = np.mean(scores_deque)
@@ -62,12 +62,12 @@ def carracing_reinforce_training(agent, env, configs, run_manager, num_episodes=
         # Log metrics
         run_manager.log_episode(episode, episode_score)
         
-        # Salva il miglior modello
+        # Save best model
         if avg_score > best_score:
             best_score = avg_score
             run_manager.save_model("best_carracing_model.pth")
         
-        # Checkpoint periodico
+        # Periodic checkpoint
         run_manager.maybe_save_checkpoint(episode)
         
         # Print progress
@@ -84,14 +84,14 @@ def carracing_reinforce_training(agent, env, configs, run_manager, num_episodes=
 
 def generic_episode_training(agent, env, max_steps=1000, device='cpu'):
     """
-    Funzione generica per eseguire un episodio di training
-    Utilizzabile per diversi tipi di agenti e environment
+    Generic function to execute a training episode
+    Usable for different types of agents and environments
     
     Args:
-        agent: Agente con metodi select_action e act
-        env: Environment gymnasium-compatibile
-        max_steps: Numero massimo di step per episodio
-        device: Device per computazioni
+        agent: Agent with select_action and act methods
+        env: Gymnasium-compatible environment
+        max_steps: Maximum number of steps per episode
+        device: Device for computations
     
     Returns:
         Tupla (rewards, log_probs, states, actions, total_reward)
@@ -108,7 +108,7 @@ def generic_episode_training(agent, env, max_steps=1000, device='cpu'):
     for t in range(max_steps):
         states.append(state)
         
-        # Seleziona azione
+        # Select action
         if hasattr(agent, 'act'):
             action, log_prob = agent.act(state)
         elif hasattr(agent, 'select_action'):
@@ -119,7 +119,7 @@ def generic_episode_training(agent, env, max_steps=1000, device='cpu'):
         actions.append(action)
         log_probs.append(log_prob)
         
-        # Esegui step
+        # Execute step
         next_state, reward, terminated, truncated, _ = env.step(action)
         rewards.append(reward)
         total_reward += reward
@@ -142,11 +142,11 @@ def batch_training_episodes(agent, env, num_episodes, max_steps=1000, device='cp
         env: L'environment
         num_episodes: Numero di episodi
         max_steps: Step massimi per episodio
-        device: Device per computazioni
-        print_every: Frequenza di logging
+        device: Device for computations
+        print_every: Logging frequency
     
     Returns:
-        Lista dei punteggi totali per episodio
+        List of total scores per episode
     """
     episode_scores = []
     scores_deque = deque(maxlen=100)

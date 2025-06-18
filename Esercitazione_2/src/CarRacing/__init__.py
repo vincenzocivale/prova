@@ -1,5 +1,5 @@
 """
-Modulo CarRacing per algoritmi PPO su ambiente CarRacing
+CarRacing module for PPO algorithms on CarRacing environment
 """
 from .agent import Agent
 from .environment import Env

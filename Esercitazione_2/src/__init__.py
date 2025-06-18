@@ -1,13 +1,13 @@
 """
-Modulo principale per il progetto Esercitazione_2 - Deep Reinforcement Learning
+Main module for the Esercitazione_2 project - Deep Reinforcement Learning
 """
 
-# Importa i moduli principali
+# Import main modules
 from . import cartpole
 from . import CarRacing
 from . import common
 
-# Importa le funzioni principali per comodità
+# Import main functions for convenience
 from .cartpole import (
     Policy, ValueNetwork,
     ReinforceTrainer, ReinforceWithBaselineTrainer,

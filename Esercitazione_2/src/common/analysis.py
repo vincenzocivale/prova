@@ -1,5 +1,5 @@
 """
-Modulo di analisi per funzioni di plotting e analisi dei risultati di training
+Analysis module for plotting and analysis functions of training results
 """
 import numpy as np
 import matplotlib.pyplot as plt
@@ -8,26 +8,26 @@ from collections import deque
 
 def moving_average(data, window=100):
     """
-    Calcola la media mobile di una serie temporale
+    Calculates moving average of a time series
     
     Args:
-        data: Lista/array di valori
-        window: Dimensione finestra per media mobile
+        data: List/array of values
+        window: Window size for moving average
     
     Returns:
-        Array numpy con media mobile
+        Numpy array with moving average
     """
     return np.convolve(data, np.ones(window)/window, mode='valid')
 
 
 def plot_training_scores(scores, title="Training Progress", window=100):
     """
-    Plotta i risultati del training con media mobile
+    Plots training results with moving average
     
     Args:
-        scores: Lista dei punteggi per episodio
-        title: Titolo del grafico
-        window: Dimensione finestra per media mobile
+        scores: List of scores per episode
+        title: Graph title
+        window: Window size for moving average
     """
     plt.figure(figsize=(12, 6))
     plt.plot(scores, label='Score per Episode', alpha=0.6)
@@ -52,23 +52,23 @@ def plot_carracing_scores(scores, window=100):
 
 def plot_comparison_scores(scores_dict, window=100, title="Training Comparison"):
     """
-    Plotta confronto tra diversi algoritmi/configurazioni
+    Plots comparison between different algorithms/configurations
     
     Args:
-        scores_dict: Dict con nome_algoritmo -> lista_scores
-        window: Dimensione finestra per media mobile
-        title: Titolo del grafico
+        scores_dict: Dict with algorithm_name -> scores_list
+        window: Window size for moving average
+        title: Graph title
     """
     fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(15, 5))
     
     colors = ['blue', 'red', 'green', 'orange', 'purple', 'brown']
     
-    # Plot 1: Reward per episodio
+    # Plot 1: Reward per episode
     for i, (name, scores) in enumerate(scores_dict.items()):
         color = colors[i % len(colors)]
         ax1.plot(scores, alpha=0.6, label=name, color=color)
         
-        # Media mobile
+        # Moving average
         if len(scores) >= window:
             ma = moving_average(scores, window)
             ax1.plot(range(window - 1, len(scores)), ma, 
@@ -80,7 +80,7 @@ def plot_comparison_scores(scores_dict, window=100, title="Training Comparison")
     ax1.legend()
     ax1.grid(True)
     
-    # Plot 2: Istogramma degli score finali (ultimi 100 episodi)
+    # Plot 2: Final scores histogram (last 100 episodes)
     for i, (name, scores) in enumerate(scores_dict.items()):
         final_scores = scores[-100:] if len(scores) >= 100 else scores
         color = colors[i % len(colors)]
@@ -98,14 +98,14 @@ def plot_comparison_scores(scores_dict, window=100, title="Training Comparison")
 
 def episodes_to_target(scores, target=180):
     """
-    Trova il numero di episodi necessari per raggiungere un target score
+    Finds number of episodes needed to reach a target score
     
     Args:
-        scores: Lista dei punteggi
-        target: Score target da raggiungere
+        scores: List of scores
+        target: Target score to reach
     
     Returns:
-        Numero di episodi per raggiungere il target
+        Number of episodes to reach target
     """
     for i, score in enumerate(scores):
         if score >= target:
@@ -127,19 +127,19 @@ def analyze_training_results(scores_dict, target_score=180, window=50):
     """
     results = {}
     
-    print("=== ANALISI DEI RISULTATI ===")
+    print("=== RESULTS ANALYSIS ===")
     
     for name, scores in scores_dict.items():
-        # Statistiche di base
+        # Basic statistics
         final_score = scores[-1] if scores else 0
         final_scores = scores[-100:] if len(scores) >= 100 else scores
         mean_final = np.mean(final_scores)
         std_final = np.std(final_scores)
         
-        # Convergenza
+        # Convergence
         episodes_target = episodes_to_target(scores, target_score)
         
-        # Stabilità (std degli ultimi episodi)
+        # Stability (std of last episodes)
         stability_window = min(window, len(scores))
         stability = np.std(scores[-stability_window:]) if stability_window > 0 else 0
         
@@ -170,12 +170,12 @@ def plot_cartpole_comparison(scores_no_baseline, scores_with_baseline):
         'Con Baseline': scores_with_baseline
     }
     
-    plot_comparison_scores(scores_dict, title='Confronto REINFORCE: Con vs Senza Baseline')
+    plot_comparison_scores(scores_dict, title='REINFORCE Comparison: With vs Without Baseline')
     
-    # Analisi dettagliata
+    # Detailed analysis
     results = analyze_training_results(scores_dict, target_score=180)
     
-    print("\n=== STATISTICHE COMPARATIVE ===")
+    print("\n=== COMPARATIVE STATISTICS ===")
     for name, stats in results.items():
         print(f"{name}: {stats['mean_final_100']:.2f} ± {stats['std_final_100']:.2f}")
     

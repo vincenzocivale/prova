@@ -21,7 +21,7 @@ class RunManager:
         self.save_every = save_every
 
     def log_training_step(self, episode, step, reward=None, loss=None, entropy=None, **kwargs):
-        # kwargs per metriche extra dinamiche (es: lr, grad_norm, ecc)
+        # kwargs for extra dynamic metrics (e.g.: lr, grad_norm, etc)
         metrics = {}
         if reward is not None:
             metrics["reward"] = reward
@@ -107,13 +107,13 @@ class RunManager:
             frame = env_standard.render()
             frames.append(frame)
             
-            # Converti lo state per il tuo agent (se necessario)
-            # Il tuo agent potrebbe aspettarsi un formato diverso
+            # Convert state for your agent (if necessary)
+            # Your agent might expect a different format
             try:
                 with torch.no_grad():
                     action, _ = agent.select_action(state)
             except:
-                # Se c'è incompatibilità, usa azioni casuali per il video
+                # If there's incompatibility, use random actions for video
                 action = env_standard.action_space.sample()
             
             # Step environment

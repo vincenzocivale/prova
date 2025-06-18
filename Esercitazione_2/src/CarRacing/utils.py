@@ -37,12 +37,12 @@ def record_carracing_video(agent, env, filename="carracing_video.mp4", max_steps
             with torch.no_grad():
                 action, _ = agent.select_action(state)
             
-            # Esegui step nel tuo environment personalizzato
+            # Execute step in your custom environment
             next_state, reward, done, death_reason = env.step(
                 action, action_history[-1], action_history[-2]
             )
             
-            # Simula azione nell'environment standard per il frame
+            # Simulate action in standard environment for frame
             try:
                 video_obs, _, _, _, _ = video_env.step(action)
                 frame = video_env.render()
@@ -121,7 +121,7 @@ def record_carracing_video_simple(agent, env, filename="carracing_simple.mp4", m
 
 
 def save_video_from_frames(frames, filename, fps=30):
-    """Salva una lista di frame come video MP4"""
+    """Saves a list of frames as MP4 video"""
     if not frames:
         return
     

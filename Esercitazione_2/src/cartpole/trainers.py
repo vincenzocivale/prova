@@ -1,5 +1,5 @@
 """
-Classi trainer per REINFORCE e REINFORCE con baseline
+Trainer classes for REINFORCE and REINFORCE with baseline
 """
 import numpy as np
 import torch
@@ -10,7 +10,7 @@ import wandb
 
 
 class ReinforceTrainer:
-    """Trainer per l'algoritmo REINFORCE base"""
+    """Trainer for basic REINFORCE algorithm"""
     
     def __init__(self, policy, optimizer, env, gamma=0.99, max_t=1000, project_name=None, device='cpu'):
         self.policy = policy
@@ -39,17 +39,17 @@ class ReinforceTrainer:
         return (returns - returns.mean()) / (returns.std() + eps)
 
     def reinforce(self, num_episodes=500, print_every=50, save_path="best_reinforce.pt"):
-        """Esegue il training REINFORCE"""
+        """Performs REINFORCE training"""
         for i_episode in range(1, num_episodes + 1):
             saved_log_probs = []
             rewards = []
-            # Gymnasium reset restituisce una tupla (observation, info)
+            # Gymnasium reset returns a tuple (observation, info)
             state, _ = self.env.reset()
 
             for t in range(self.max_t):
                 action, log_prob = self.policy.act(state)
                 saved_log_probs.append(log_prob)
-                # Gymnasium step restituisce (observation, reward, terminated, truncated, info)
+                # Gymnasium step returns (observation, reward, terminated, truncated, info)
                 next_state, reward, terminated, truncated, _ = self.env.step(action)
                 rewards.append(reward)
                 done = terminated or truncated
@@ -110,7 +110,7 @@ class ReinforceTrainer:
 
 
 class ReinforceWithBaselineTrainer(ReinforceTrainer):
-    """Trainer per REINFORCE con baseline (value function)"""
+    """Trainer for REINFORCE with baseline (value function)"""
     
     def __init__(self, policy, value_network, policy_optimizer, value_optimizer,
                  env, gamma=0.99, max_t=1000, project_name=None, device='cpu'):
@@ -153,13 +153,13 @@ class ReinforceWithBaselineTrainer(ReinforceTrainer):
                 value_losses.append(nn.functional.mse_loss(baseline.squeeze(), 
                                                           torch.tensor(R).to(self.device)))
 
-            # Aggiorna policy
+            # Update policy
             self.optimizer.zero_grad()
             policy_loss = torch.stack(policy_losses).sum()
             policy_loss.backward()
             self.optimizer.step()
 
-            # Aggiorna value network
+            # Update value network
             self.value_optimizer.zero_grad()
             value_loss = torch.stack(value_losses).sum()
             value_loss.backward()

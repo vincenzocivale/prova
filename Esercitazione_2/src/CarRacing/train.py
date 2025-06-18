@@ -18,18 +18,18 @@ def training_loop(agent, env, configs):
         score = 0
         state = env.reset()
         
-        # Inizializza action history per il training loop
+        # Initialize action history for training loop
         action_history = [np.zeros(3), np.zeros(3)]  # [second_last, last]
         
         for t in range(configs.max_episode_steps):
             action, logp = agent.select_action(state)
             
-            # OPZIONE 1: Usa il metodo step() che accetta azioni precedenti
+            # OPTION 1: Use the step() method that accepts previous actions
             next_state, reward, done, death_reason = env.step(
                 action, action_history[-1], action_history[-2]
             )
             
-            # OPZIONE 2: Alternativa - usa step_with_steps se preferisci gestire internamente
+            # OPTION 2: Alternative - use step_with_steps if you prefer internal handling
             # next_state, reward, done, death_reason = env.step_with_steps(action, t)
             
             if not configs.test:
@@ -38,7 +38,7 @@ def training_loop(agent, env, configs):
             score += reward
             state = next_state
             
-            # Aggiorna action history
+            # Update action history
             action_history = [action_history[-1], action]  # [last, current]
             
             if done:
@@ -56,14 +56,14 @@ def training_loop(agent, env, configs):
         print(f"Episode {episode} | Score: {score:.2f} | Steps: {t}")
         print("-" * 40)
 
-# VERSIONE ALTERNATIVA CON DEBUGGING
+# ALTERNATIVE VERSION WITH DEBUGGING
 def training_loop_debug(agent, env, configs):
     for episode in range(configs.checkpoint, 100000):
         score = 0
         state = env.reset()
         action_history = [np.zeros(3), np.zeros(3)]
         
-        # Debug: verifica dimensioni state
+        # Debug: verify state dimensions
         print(f"Initial state shape: {state.shape}")
         expected_size = configs.valueStackSize * configs.numberOfLasers + 3 * configs.actionStack
         print(f"Expected size: {expected_size}, Actual size: {len(state)}")
@@ -74,14 +74,14 @@ def training_loop_debug(agent, env, configs):
             action, logp = agent.select_action(state)
             
             # Debug: log action
-            if t < 5:  # Log primi 5 step
+            if t < 5:  # Log first 5 steps
                 print(f"Step {t}: Action = {action}")
             
             next_state, reward, done, death_reason = env.step(
                 action, action_history[-1], action_history[-2]
             )
             
-            # Debug: breakdown reward (se implementi logging dettagliato nell'env)
+            # Debug: breakdown reward (if you implement detailed logging in env)
             if hasattr(env, 'last_reward_breakdown'):
                 for key, val in env.last_reward_breakdown.items():
                     reward_breakdown[key] += val
