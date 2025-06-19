@@ -21,7 +21,7 @@ def get_lunar_lander_hyperparameters():
     """Returns hyperparameters for LunarLander-v2"""
     return {
         "h_size": 64,
-        "n_training_episodes": 5000,
+        "n_training_episodes": 2500,
         "n_evaluation_episodes": 10,
         "max_t": 1000,
         "gamma": 0.99,
