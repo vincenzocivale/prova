@@ -64,12 +64,12 @@ class RunManager:
                 with torch.no_grad():
                     action, _ = self.model.select_action(state)
                 
-                # Step environment - usa la stessa signature del training
+                # Step environment - uses the same signature as training
                 state, reward, done, reason = self.env.step(action, step, self.model)
                 
                 # Try to render - remove 'mode' parameter
                 try:
-                    frame = self.env.render()  # RIMOSSO mode='rgb_array'
+                    frame = self.env.render()  # REMOVED mode='rgb_array'
                     if frame is not None:
                         frames.append(frame)
                 except Exception as render_error:
@@ -92,9 +92,9 @@ class RunManager:
 
 
     def record_video_standard_env(agent, filename="carracing_test.mp4", max_steps=1000):
-        """Record video usando l'environment gym standard"""
+        """Record video using the standard gym environment"""
         
-        # Crea environment standard con rendering
+        # Create standard environment with rendering
         env_standard = gym.make("CarRacing-v2", render_mode="rgb_array", continuous=False)
         
         frames = []
@@ -129,7 +129,7 @@ class RunManager:
         
         env_standard.close()
         
-        # Salva video
+        # Save video
         if frames:
             height, width, _ = frames[0].shape
             fourcc = cv2.VideoWriter_fourcc(*'mp4v')

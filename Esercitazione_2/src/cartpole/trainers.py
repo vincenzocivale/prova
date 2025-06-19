@@ -29,7 +29,7 @@ class ReinforceTrainer:
             wandb.init(project=self.project_name)
 
     def compute_returns(self, rewards):
-        """Calcola i return scontati e normalizzati"""
+        """Computes discounted and normalized returns"""
         returns = deque(maxlen=self.max_t)
         for t in reversed(range(len(rewards))):
             R = rewards[t] + self.gamma * (returns[0] if returns else 0.0)
@@ -119,7 +119,7 @@ class ReinforceWithBaselineTrainer(ReinforceTrainer):
         self.value_optimizer = value_optimizer
 
     def reinforce(self, num_episodes=500, print_every=50, save_path="best_reinforce_baseline.pt"):
-        """Esegue il training REINFORCE con baseline"""
+        """Executes REINFORCE training with baseline"""
         for i_episode in range(1, num_episodes + 1):
             saved_log_probs = []
             rewards = []
@@ -151,7 +151,7 @@ class ReinforceWithBaselineTrainer(ReinforceTrainer):
                 advantage = R - baseline.item()
                 policy_losses.append(-log_prob * advantage)
                 value_losses.append(nn.functional.mse_loss(baseline.squeeze(), 
-                                                          torch.tensor(R).to(self.device)))
+                                                          torch.tensor(R, dtype=torch.float32).to(self.device)))
 
             # Update policy
             self.optimizer.zero_grad()

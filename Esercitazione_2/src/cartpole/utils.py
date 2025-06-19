@@ -19,7 +19,7 @@ def evaluate_agent(env, max_steps, n_eval_episodes, policy):
     episode_rewards = []
 
     for episode in range(n_eval_episodes):
-        state, _ = env.reset()  # Gymnasium reset restituisce (obs, info)
+        state, _ = env.reset()  # Gymnasium reset returns (obs, info)
         total_rewards_ep = 0
 
         for step in range(max_steps):
@@ -65,5 +65,5 @@ def record_video(env, policy, out_path, fps=30):
         state = obs
 
     imageio.mimsave(out_path, [np.array(img) for img in images], fps=fps)
-    print(f"Video salvato in {out_path}")
+    print(f"Video saved to {out_path}")
     display(Video(out_path, embed=True))

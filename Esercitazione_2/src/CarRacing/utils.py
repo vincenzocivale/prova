@@ -1,5 +1,5 @@
 """
-Utilities per CarRacing simili a quelle del cartpole
+CarRacing utilities similar to those of cartpole
 """
 import cv2
 import numpy as np
@@ -14,26 +14,26 @@ def record_carracing_video(agent, env, filename="carracing_video.mp4", max_steps
     Versione semplificata che evita problemi di sincronizzazione
     
     Args:
-        agent: L'agente addestrato
-        env: L'environment CarRacing personalizzato
-        filename: Nome del file video
-        max_steps: Numero massimo di step
-        fps: Frame per secondo
+        agent: The trained agent
+        env: The custom CarRacing environment
+        filename: Video file name
+        max_steps: Maximum number of steps
+        fps: Frames per second
     """
-    print(f"🎬 Registrazione video semplificata per {max_steps} step...")
+    print(f"🎬 Simplified video recording for {max_steps} steps...")
     
     try:
-        # Usa l'environment personalizzato per la logica
+        # Use custom environment for logic
         frames = []
         state = env.reset()
         action_history = [np.zeros(3), np.zeros(3)]
         
-        # Crea environment standard solo per il rendering
+        # Create standard environment only for rendering
         video_env = gym.make('CarRacing-v3', render_mode='rgb_array', continuous=False)
         video_env.reset()
         
         for step in range(max_steps):
-            # Seleziona azione dall'agente
+            # Select action from agent
             with torch.no_grad():
                 action, _ = agent.select_action(state)
             
@@ -49,29 +49,29 @@ def record_carracing_video(agent, env, filename="carracing_video.mp4", max_steps
                 if frame is not None:
                     frames.append(frame)
             except Exception as e:
-                if step < 5:  # Log solo i primi errori
+                if step < 5:  # Log only first errors
                     print(f"Warning frame {step}: {e}")
             
             state = next_state
             action_history = [action_history[-1], action]
             
             if done:
-                print(f"Episodio terminato al step {step}: {death_reason}")
+                print(f"Episode ended at step {step}: {death_reason}")
                 break
         
         video_env.close()
         
-        # Salva il video se abbiamo frames
-        if len(frames) > 10:  # Almeno 10 frames per un video significativo
+        # Save the video if we have frames
+        if len(frames) > 10:  # At least 10 frames for a meaningful video
             save_video_from_frames(frames, filename, fps)
-            print(f"✅ Video salvato: {filename} ({len(frames)} frames)")
+            print(f"✅ Video saved: {filename} ({len(frames)} frames)")
             return True
         else:
-            print(f"❌ Troppo pochi frames catturati: {len(frames)}")
+            print(f"❌ Too few frames captured: {len(frames)}")
             return False
             
     except Exception as e:
-        print(f"❌ Errore nella registrazione video: {e}")
+        print(f"❌ Error in video recording: {e}")
         return False
 
 
@@ -89,7 +89,7 @@ def record_carracing_video_simple(agent, env, filename="carracing_simple.mp4", m
         obs, _ = video_env.reset()
         
         for step in range(max_steps):
-            # Azione casuale per semplicità (puoi sostituire con l'agente se necessario)
+            # Random action for simplicity (you can replace with agent if needed)
             action = video_env.action_space.sample()
             
             # Render frame
@@ -102,21 +102,21 @@ def record_carracing_video_simple(agent, env, filename="carracing_simple.mp4", m
             done = terminated or truncated
             
             if done:
-                print(f"Episodio standard terminato al step {step}")
+                print(f"Standard episode ended at step {step}")
                 break
         
         video_env.close()
         
         if frames:
             save_video_from_frames(frames, filename, fps)
-            print(f"✅ Video semplice salvato: {filename}")
+            print(f"✅ Simple video saved: {filename}")
             return True
         else:
-            print("❌ Nessun frame catturato")
+            print("❌ No frames captured")
             return False
             
     except Exception as e:
-        print(f"❌ Errore video semplice: {e}")
+        print(f"❌ Simple video error: {e}")
         return False
 
 
@@ -140,7 +140,7 @@ def save_video_from_frames(frames, filename, fps=30):
 
 def evaluate_carracing_agent(agent, env, n_eval_episodes=5, max_steps=500):
     """
-    Valuta le performance dell'agente CarRacing
+    Evaluates CarRacing agent performance
     
     Args:
         agent: L'agente da valutare
@@ -192,8 +192,8 @@ def evaluate_carracing_agent(agent, env, n_eval_episodes=5, max_steps=500):
 
 
 def display_video(filename):
-    """Mostra il video nel notebook"""
+    """Show video in notebook"""
     try:
         display(Video(filename, width=800, height=600))
     except Exception as e:
-        print(f"Errore nella visualizzazione del video: {e}")
+        print(f"Error displaying video: {e}")

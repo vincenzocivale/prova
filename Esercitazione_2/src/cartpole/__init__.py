@@ -1,5 +1,5 @@
 """
-Modulo cartpole per algoritmi REINFORCE
+Cartpole module for REINFORCE algorithms
 """
 from .models import Policy, ValueNetwork
 from .trainers import ReinforceTrainer, ReinforceWithBaselineTrainer

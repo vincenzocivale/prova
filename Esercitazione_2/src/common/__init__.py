@@ -1,5 +1,5 @@
 """
-Modulo common per funzioni condivise tra diversi algoritmi
+Common module for shared functions between different algorithms
 """
 from .analysis import (
     moving_average, 

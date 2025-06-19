@@ -1,5 +1,5 @@
 """
-Modelli neurali per il training con REINFORCE
+Neural models for REINFORCE training
 """
 import torch
 import torch.nn as nn
@@ -8,7 +8,7 @@ from torch.distributions import Categorical
 
 
 class Policy(nn.Module):
-    """Rete neurale per la policy in REINFORCE"""
+    """Neural network for the policy in REINFORCE"""
     
     def __init__(self, s_size, a_size, h_size):
         super(Policy, self).__init__()
@@ -31,7 +31,7 @@ class Policy(nn.Module):
 
 
 class ValueNetwork(nn.Module):
-    """Rete neurale per stimare il valore degli stati (baseline)"""
+    """Neural network to estimate state values (baseline)"""
     
     def __init__(self, state_size, hidden_size=128):
         super().__init__()

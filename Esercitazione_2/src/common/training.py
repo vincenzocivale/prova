@@ -135,7 +135,7 @@ def generic_episode_training(agent, env, max_steps=1000, device='cpu'):
 
 def batch_training_episodes(agent, env, num_episodes, max_steps=1000, device='cpu', print_every=50):
     """
-    Esegue training per più episodi consecutivi
+    Executes training for multiple consecutive episodes
     
     Args:
         agent: L'agente da allenare

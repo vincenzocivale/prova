@@ -1,9 +1,9 @@
 """
-Configurazione e iperparametri per il training REINFORCE
+Configuration and hyperparameters for REINFORCE training
 """
 
 def get_cartpole_hyperparameters():
-    """Restituisce gli iperparametri per CartPole-v1"""
+    """Returns hyperparameters for CartPole-v1"""
     return {
         "h_size": 16,
         "n_training_episodes": 600,
@@ -18,10 +18,10 @@ def get_cartpole_hyperparameters():
 
 
 def get_lunar_lander_hyperparameters():
-    """Restituisce gli iperparametri per LunarLander-v2"""
+    """Returns hyperparameters for LunarLander-v2"""
     return {
         "h_size": 64,
-        "n_training_episodes": 2000,
+        "n_training_episodes": 5000,
         "n_evaluation_episodes": 10,
         "max_t": 1000,
         "gamma": 0.99,
@@ -33,6 +33,6 @@ def get_lunar_lander_hyperparameters():
 
 
 def get_device():
-    """Restituisce il device per PyTorch (GPU se disponibile, altrimenti CPU)"""
+    """Returns the device for PyTorch (GPU if available, otherwise CPU)"""
     import torch
     return torch.device("cuda:0" if torch.cuda.is_available() else "cpu")

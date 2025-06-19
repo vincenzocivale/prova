@@ -163,11 +163,11 @@ def analyze_training_results(scores_dict, target_score=180, window=50):
 
 def plot_cartpole_comparison(scores_no_baseline, scores_with_baseline):
     """
-    Funzione specifica per confrontare REINFORCE con/senza baseline su CartPole
+    Specific function to compare REINFORCE with/without baseline on CartPole
     """
     scores_dict = {
-        'Senza Baseline': scores_no_baseline,
-        'Con Baseline': scores_with_baseline
+        'Without Baseline': scores_no_baseline,
+        'With Baseline': scores_with_baseline
     }
     
     plot_comparison_scores(scores_dict, title='REINFORCE Comparison: With vs Without Baseline')
