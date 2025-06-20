@@ -127,7 +127,7 @@ The evaluation confirms the original article’s conclusion that all transformer
 However, a critical new finding is that **intermediate layers can outperform the final layer**: for example, the second Transformer block’s embedding yields an MSE of 30.2 compared to 381.0 for the last layer, indicating richer predictive information early in the network. This underscores the importance of multi-layer analysis to understand model behavior and representation quality.
 
 
-The following table reports the main evaluation metrics (MSE, MAE, Pearson correlation) for each Transformer layer output compared to a simple mean baseline. Full results, including standard deviations, are available in [`results/scgpt_layerwise_evaluation.csv`](results/scgpt_layerwise_evaluation.csv).
+The following table reports the main evaluation metrics (MSE, MAE, Pearson correlation) for each Transformer layer output compared to a simple mean baseline. Full results, including standard deviations, are available in [`data/result/scgpt_layerwise_evaluation.csv`](results/scgpt_layerwise_evaluation.csv).
 
 | Layer                | MSE Mean    | MAE Mean   |
 | -------------------- | ----------- | ---------- |
