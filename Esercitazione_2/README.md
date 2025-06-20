@@ -36,6 +36,7 @@ Esercitazione_2/
 
 - [Exercise 1: REINFORCE Vanilla on CartPole](#exercise-1-reinforce-vanilla-on-cartpole)
 - [Exercise 2: REINFORCE with Baseline CartPole](#exercise-2-reinforce-with-baseline-cartpole)
+- [Exercise 3.2: REINFORCE on Lunar Lander](#exercise-32-reinforce-on-lunar-lander)
 - [Exercise 3: Car Racing OpenAI](#exercise-3-car-racing-openai)
 
 ### **Exercise 1: REINFORCE Vanilla on CartPole**
@@ -119,6 +120,40 @@ As shown in the plots, the performance difference between the two approaches:
 - **REINFORCE with Value Baseline**, on the other hand, displays significantly **faster convergence** and **greater stability**. The moving average increases more smoothly and reaches the performance ceiling (reward = 500) in fewer episodes. The value baseline helps reduce variance by centering the updates around state-specific expectations, resulting in a more efficient learning process.
 
 While both methods eventually achieve high rewards, the baseline-enhanced version learns **faster**, **more reliably**, and **recovers better** from performance drops.
+
+
+### **Exercise 3.2: REINFORCE on Lunar Lander**
+
+Following the successful implementation of REINFORCE on CartPole, the next challenge involved applying the same algorithms to the more complex **LunarLander-v3** environment. Unlike CartPole's simple pole-balancing task, Lunar Lander requires the agent to learn sophisticated control strategies for safely landing a spacecraft while managing fuel consumption and avoiding crashes.
+
+The Lunar Lander environment presents a continuous 8-dimensional state space including position, velocity, orientation, and contact sensors, with four discrete actions: do nothing, fire left engine, fire main engine, and fire right engine. The reward structure incentivizes smooth landings between the flags (+100 to +140 points) while penalizing crashes (-100 points) and fuel consumption.
+
+
+The experimental design maintained consistency with the CartPole implementation while adapting hyperparameters for the increased complexity:
+
+- **Network Architecture**: Both policy and value networks utilized 64 hidden units (increased from 16 for CartPole) to handle the higher-dimensional state space
+- **Training Episodes**: Extended to 2,500 episodes to account for the environment's complexity
+- **Learning Rate**: Reduced to 5×10⁻³ for more stable learning
+- **Discount Factor**: Set to γ = 0.99 to properly value long-term rewards in the landing sequence
+
+The same dual-network approach was employed, with separate policy and value networks to enable REINFORCE with baseline training while maintaining clear separation of concerns between action selection and state evaluation.
+
+The comparative analysis between vanilla REINFORCE and REINFORCE with baseline revealed significant performance differences in the Lunar Lander environment:
+
+[Lunar_Lander REINFORCE with Baseline Result](https://github.com/user-attachments/assets/a04095c2-a592-4253-bc42-2fad203713fb)
+
+
+**Quantitative Performance Metrics:**
+
+| Method | Final Training Score | Mean Evaluation Performance | Standard Deviation |
+|--------|---------------------|---------------------------|-------------------|
+| **REINFORCE (Vanilla)** | -45.28 | 62.61 | ±146.27 |
+| **REINFORCE with Baseline** | **242.03** | **201.26** | **±79.30** |
+
+
+These results corroborate established theoretical findings in policy gradient methods, specifically demonstrating that **variance reduction techniques become increasingly critical as environment complexity increases**. The Lunar Lander environment's continuous dynamics, sparse rewards, and safety constraints amplify the high-variance problem inherent in vanilla REINFORCE, making baseline methods not just beneficial but essential for successful learning.
+
+The substantial performance gap observed here (287 points) exceeds the improvements seen in simpler environments like CartPole, suggesting that **the benefits of variance reduction scale with task complexity**. This finding has important implications for the practical deployment of policy gradient methods in real-world applications, where environmental complexity and safety requirements make consistent, low-variance learning paramount.
 
 
 ### **Exercise 3: Car Racing OpenAI**
