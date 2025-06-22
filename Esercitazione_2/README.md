@@ -67,9 +67,6 @@ The implementation relies on two distinct neural networks defined in [`src/cartp
 - **[`Policy`](src/cartpole/models.py)**: A feed-forward network with two hidden layers (128 units each), outputting logits over the two possible actions.
 - **[`ValueNetwork`](src/cartpole/models.py)**: A similarly structured network that outputs a single scalar value representing the estimated value of the state.
 
-- **Policy Network**: A feed-forward network with two hidden layers (128 units each), outputting logits over the two possible actions.
-- **Value Network**: A similarly structured network that outputs a single scalar value representing the estimated value of the state.
-
 ```python
 # Network architectures from src/cartpole/models.py
 
